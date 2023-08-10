@@ -1,10 +1,9 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import logo from "../../assets/img/logo_er.png";
-
+import logo from "../../assets/img/logoer.png";
 const Proposta = {
   gerarProposta: function (data) {
-    pdfMake.vsf = pdfFonts.pdfMake.vsf;
+    pdfMake.vsf = pdfFonts.pdfMake.vfs;
 
     const fonts = {
       Roboto: {
@@ -331,7 +330,7 @@ const Proposta = {
       pageMargins: [40, 180, 20, 5],
       header: [
         {
-          columns: [logoEmpresa, dadosEmpresa],
+          columns: [dadosEmpresa],
         },
         titleProposta,
         textHeader,
