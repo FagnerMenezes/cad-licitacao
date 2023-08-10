@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
-import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import { Modal } from "react-bootstrap";
-//import DataTable from "react-data-table-component";
+import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import DtTable from "../../componentes/form/DataTable";
 
+import GovernmentForm from "../../componentes/goverment/GovernmentForm";
+import useFetch from "../../hooks/UseFetch";
 import {
+  BtnLink,
+  ContainerBody,
   ContainerGeral,
   ContainerHeader,
-  ContainerBody,
   ContainerPesquisa,
   ContainerTable,
-  BtnLink,
 } from "../../services/index";
-import useFetch from "../../hooks/UseFetch";
-import GovernmentForm from "../../componentes/goverment/GovernmentForm";
 
 const col = [
   { name: "Nome", sortable: true, selector: (row) => row.nome },
