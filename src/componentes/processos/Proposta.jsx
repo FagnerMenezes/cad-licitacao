@@ -28,6 +28,8 @@ const Proposta = {
         style: {
           fontSize: 60,
           bold: true,
+          italics: true,
+          alignment: "center",
         },
       },
     ];
@@ -59,6 +61,11 @@ const Proposta = {
 
     const titleProposta = [
       {
+        text: "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+        with: "700px",
+        margin: [1, 0, 1, 0],
+      },
+      {
         text: "PROPOSTA",
         fontSize: 16,
         alignment: "center",
@@ -74,10 +81,10 @@ const Proposta = {
     ];
 
     const itens = data.reference_term.itens
-      .filter((dados) => dados.winner === "true")
+      .filter((dados) => (dados.winner === "true") | (dados.winner === true))
       .map((item) => {
         return [
-          { text: item.code, style: "rows" },
+          { text: item.cod, style: "rows" },
           { text: item.description, style: "rows" },
           { text: item.amount, style: "rows" },
           { text: item.unitary, style: "rows" },
@@ -272,11 +279,28 @@ const Proposta = {
         },
       },
     ];
+    const assinatura = [
+      {
+        text: "--------------------------",
+        margin: [20, 75, 20, 0],
+        alignment: "center",
+      },
+      {
+        text: "Assinatura",
+        style: {
+          fontSize: 12,
+          bold: true,
+          italics: true,
+          alignment: "center",
+          margin: [20, 80, 20, 0],
+        },
+      },
+    ];
 
     const totalGeral = data.reference_term.itens
-      .filter((dados) => dados.winner === "true")
+      .filter((dados) => (dados.winner === "true") | (dados.winner === true))
       .map(
-        (item, i) => parseFloat(item.unitary_value.$numberDecimal) * item.amount
+        (item) => parseFloat(item.unitary_value.$numberDecimal) * item.amount
       )
       .reduce((acc, item) => acc + item);
 
@@ -327,6 +351,7 @@ const Proposta = {
       dadosBancarios,
       dadosComercias,
       dataDay,
+      assinatura,
     ];
 
     const foot = [];

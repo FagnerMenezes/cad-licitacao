@@ -1,12 +1,12 @@
 import { useState } from "react";
-import InputFloat from "./InputFloat";
+//import InputFloat from "./InputFloat";
+import InputFloat from "@/componentes/form/InputFloat";
 
 const Item = ({ data, handleSubmit }) => {
   const [item, setItem] = useState(data || {});
-  const [checkItem, setCheckItem] = useState(false);
+  //const [checkItem, setCheckItem] = useState(false);
 
   const handleCheckItem = (e) => {
-    setCheckItem(e.target.checked);
     setItem({ ...item, winner: e.target.checked });
   };
 
@@ -55,10 +55,6 @@ const Item = ({ data, handleSubmit }) => {
     setItem({});
   }
 
-  const validationItem = () => {
-    // yup.ObjectSchema.
-  };
-
   return (
     <>
       <form>
@@ -72,7 +68,7 @@ const Item = ({ data, handleSubmit }) => {
                 type={"checkbox"}
                 name="winner"
                 onChange={handleCheckItem}
-                checked={checkItem}
+                checked={item.winner}
                 defaultChecked={false}
               />
             </div>

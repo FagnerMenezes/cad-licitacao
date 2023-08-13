@@ -1,5 +1,8 @@
 import react from "@vitejs/plugin-react";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 import { defineConfig } from "vite";
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,5 +15,8 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
+  },
+  resolve: {
+    alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
   },
 });

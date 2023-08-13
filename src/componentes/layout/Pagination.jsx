@@ -44,19 +44,12 @@ const Pagination = ({
     };
     return (
       <>
-        <div className="container overflow-x-scroll sm:overflow-hidden">
+        <div className="container overflow-x-auto ">
           {currentItems && (
-            <table className="table">
-              <thead className="">
-                <tr
-                  className=""
-                  style={{
-                    backgroundColor: "blue",
-                    color: "white",
-                    fontSize: "14px",
-                  }}
-                >
-                  <th>COD</th>
+            <table className="table-auto min-w-full text-sm font-light">
+              <thead className="border-b bg-blue-600 text-white p-2">
+                <tr className="text-center p-2">
+                  <th className="p-1">COD</th>
                   <th>QTDE</th>
                   <th>UND</th>
                   <th>DESCRIÇÃO</th>
@@ -73,14 +66,19 @@ const Pagination = ({
               <tbody>
                 {currentItems.map((item) => (
                   <>
-                    <tr style={{ fontSize: "10px" }}>
-                      <td>{item.cod}</td>
-                      <td>{item.amount}</td>
-                      <td> {item.unit}</td>
-                      <td>{item.description}</td>
-                      <td>{item.brand}</td>
-                      <td>{item.model}</td>
-                      <td>
+                    <tr
+                      style={{ fontSize: "10px" }}
+                      className="hover:cursor-pointer hover:bg-blue-200 border"
+                    >
+                      <td className="text-center">{item.cod}</td>
+                      <td className="text-center">{item.amount}</td>
+                      <td className="text-center"> {item.unit}</td>
+                      <td className="text-justify whitespace-pre-line">
+                        {item.description}
+                      </td>
+                      <td className="text-center">{item.brand}</td>
+                      <td className="text-center">{item.model}</td>
+                      <td className="text-center">
                         {parseFloat(
                           item.unitary_value.$numberDecimal
                         ).toLocaleString("pt-BR", {
@@ -88,7 +86,7 @@ const Pagination = ({
                           currency: "BRL",
                         })}
                       </td>
-                      <td>
+                      <td className="text-center">
                         {parseFloat(
                           item.value_reference.$numberDecimal
                         ).toLocaleString("pt-BR", {
@@ -96,7 +94,7 @@ const Pagination = ({
                           currency: "BRL",
                         })}
                       </td>
-                      <td>
+                      <td className="text-center">
                         {(
                           parseFloat(item.unitary_value.$numberDecimal) *
                           item.amount
@@ -105,24 +103,18 @@ const Pagination = ({
                           currency: "BRL",
                         })}
                       </td>
-                      <td style={{ textAlign: "center" }}>
+                      <td className="text-center">
                         <input
                           type={"checkbox"}
                           checked={item.winner ? true : false}
                           readOnly
                         ></input>
                       </td>
-                      <td>
-                        <FaEdit
-                          onClick={(e) => editItem(e, item._id)}
-                          style={{ color: "green" }}
-                        />
+                      <td className="text-center text-emerald-500">
+                        <FaEdit onClick={(e) => editItem(e, item._id)} />
                       </td>
-                      <td>
-                        <FaTrash
-                          onClick={(e) => deleteItem(e, item._id)}
-                          style={{ color: "red" }}
-                        />
+                      <td className="text-center text-red-500">
+                        <FaTrash onClick={(e) => deleteItem(e, item._id)} />
                       </td>
                     </tr>
                   </>
@@ -164,12 +156,12 @@ const Pagination = ({
           pageCount={pageCount}
           previousLabel={<ImPrevious2 />}
           renderOnZeroPageCount={null}
-          className="pagination pagination-sm"
-          pageClassName="pagination pagination-sm"
-          pageLinkClassName="page-link"
-          activeClassName="active"
-          previousClassName="page-link"
-          nextLinkClassName="page-link"
+          className="flex items-center gap-1"
+          pageClassName="p-2"
+          pageLinkClassName=""
+          activeClassName="flex bg-blue-600 text-white h-7 w-7 border rounded-full justify-center items-center"
+          previousClassName="text-blue-600"
+          nextLinkClassName="text-blue-600"
         />
       </nav>
     </>

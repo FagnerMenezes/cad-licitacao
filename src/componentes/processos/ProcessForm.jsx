@@ -1,3 +1,4 @@
+import api from "@/services/api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useMemo, useState } from "react";
 import { Modal, ModalBody, ModalFooter, Tab, Tabs } from "react-bootstrap";
@@ -12,19 +13,13 @@ import {
   FaTimes,
   FaTrash,
 } from "react-icons/fa";
-import api from "../../services/api";
 import InputFloat from "../form/InputFloat";
 import SubmitButton from "../form/SubmitButton";
 
+import useFetch from "@/hooks/UseFetch";
+import { FormEmpenho, Item, ListSearch, Pagination } from "@/services/index";
 import uuid from "react-uuid";
 import Swal from "sweetalert2";
-import useFetch from "../../hooks/UseFetch";
-import {
-  FormEmpenho,
-  Item,
-  ListSearch,
-  Pagination,
-} from "../../services/index";
 import GovernmentForm from "../goverment/GovernmentForm";
 import DadosGerais from "./DadosGerais";
 import LinksProcesso from "./LinksProcesso";
@@ -383,12 +378,12 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
   };
 
   const gerarProposta = (e) => {
-    e.preventDefault();
-    const winner = processo.reference_term.itens.filter(
-      (term) => term.winner === "true"
+    // e.preventDefault();
+    const filterItens = processo.reference_term.itens.filter(
+      (term) => (term.winner === true) | (term.winner === "true")
     );
 
-    if (winner.length > 0) {
+    if (filterItens.length > 0) {
       Proposta.gerarProposta(processo);
     } else {
       Swal.fire("Proposta", "Não há itens arrematados", "info");
@@ -415,7 +410,6 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                     <input
                       className="form-control "
                       type="text"
-                      text="Unidade Gerenciadora "
                       name="name"
                       placeholder="Informe o nome do órgão"
                       value={processo.government
@@ -568,17 +562,16 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
 
               <br />
               <div className="col-md-12">
-                <div className="col-sm-4">
+                <div className="flex gap-3 items-center p-1">
                   <button
                     type="button"
-                    className="btn btn-sm btn-outline-primary"
+                    className="flex items-center border-2 outline-offset-1 border-indigo-600 text-indigo-600 rounded-lg p-2 outline-1 outline-indigo-600 gap-2 hover:bg-indigo-600 hover:text-white"
                     onClick={(e) => abrirModalItem(1, "")}
                   >
                     <FaPlus /> Novo Item
                   </button>{" "}
                   <button
-                    className="btn btn-outline-danger btn-sm"
-                    style={{ width: "190px" }}
+                    className="flex items-center border-2 border-emerald-600 text-emerald-600 rounded-lg p-2 outline-1 outline-emerald-600 outline-offset-1 gap-2 hover:bg-emerald-600 hover:text-white"
                     type="button"
                     onClick={(e) => gerarProposta(e)}
                   >
