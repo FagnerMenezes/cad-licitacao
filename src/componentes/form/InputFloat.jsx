@@ -79,6 +79,7 @@ const InputFloat = ({
   value,
   readOnly = false,
   size,
+  ...props
 }) => {
   return (
     <Control>

@@ -52,7 +52,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
   const [refresh, setRefresh] = useState(false);
   const [notes, setNotes] = useState([]);
   const [statusProc, setStatusProc] = useState([]);
-  const [modalConfig, setModalConfig] = useState(false);
+  //const [modalConfig, setModalConfig] = useState(false);
   // const [titleModalConfig, settitleModalConfig] = useState("");
   const [titleEmpenho, setTitleEmpenho] = useState("");
   const [titleItem, setTitleItem] = useState("");
@@ -172,7 +172,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
     handleSubmit(processo);
   };
 
-  function enviarNotes(e) {
+  function enviarNotes() {
     const dados = {
       _id: uuid(),
       comments: notes,
@@ -377,14 +377,24 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
     setOrgEdit({} || null);
   };
 
-  const gerarProposta = (e) => {
-    // e.preventDefault();
+  const gerarProposta = () => {
     const filterItens = processo.reference_term.itens.filter(
       (term) => (term.winner === true) | (term.winner === "true")
     );
 
     if (filterItens.length > 0) {
-      Proposta.gerarProposta(processo);
+      if (
+        processo.government.length <= 0 ||
+        processo.process_data.length <= 0
+      ) {
+        Swal.fire("Proposta", "Informe os dados da licitação", "info");
+      } else {
+        Swal.fire("Proposta", "Proposta gerada com sucesso!", "success")
+          .then()
+          .finally(() => {
+            Proposta.gerarProposta(processo);
+          });
+      }
     } else {
       Swal.fire("Proposta", "Não há itens arrematados", "info");
     }
@@ -429,7 +439,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                         title="visualizar unidade gerenciadora"
                       >
                         <FaEye
-                          onClick={(e) =>
+                          onClick={() =>
                             getEditOrgao(
                               processo.government
                                 .filter((data) => data.manager === "true")
@@ -449,7 +459,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                       data-toogle="tooltip"
                       title="Localizar unidade gerenciadora"
                     >
-                      <FaSearch onClick={(e) => setShowModal(true)} />
+                      <FaSearch onClick={() => setShowModal(true)} />
                     </span>
 
                     <span
@@ -566,7 +576,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                   <button
                     type="button"
                     className="flex items-center border-2 outline-offset-1 border-indigo-600 text-indigo-600 rounded-lg p-2 outline-1 outline-indigo-600 gap-2 hover:bg-indigo-600 hover:text-white"
-                    onClick={(e) => abrirModalItem(1, "")}
+                    onClick={() => abrirModalItem(1, "")}
                   >
                     <FaPlus /> Novo Item
                   </button>{" "}
@@ -630,7 +640,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                           </tr>
                         </thead>
                         <tbody>
-                          {processo.note_commitment.map((item, i) => (
+                          {processo.note_commitment.map((item) => (
                             <>
                               <tr key={item._id} style={{ fontSize: "12px" }}>
                                 <td hidden>{item._id}</td>
@@ -712,7 +722,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                 <div className="row">
                   {processo.notes && (
                     <ul>
-                      {processo.notes.map((item, i) => (
+                      {processo.notes.map((item) => (
                         <>
                           <li>
                             {item.comments} :{" "}
@@ -766,7 +776,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                     .filter((org) => org.manager?.includes("false"))
                     .map((item) => {
                       return (
-                        <tr>
+                        <tr key={item._id}>
                           <td>{item.name}</td>
                           <td>{item.cnpj}</td>
                           <td>{item.code_government}</td>
@@ -802,7 +812,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
           >
             Editar órgão público
           </Modal.Title>
-          <FaTimes onClick={(e) => setShowModalEditGov(false)} />
+          <FaTimes onClick={() => setShowModalEditGov(false)} />
         </Modal.Header>
         <Modal.Body>
           <GovernmentForm
@@ -814,7 +824,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
         <Modal.Footer>
           <button
             className="btn btn-danger"
-            onClick={(e) => setShowModalEditGov(false)}
+            onClick={() => setShowModalEditGov(false)}
           >
             Fechar
           </button>
@@ -861,7 +871,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
           >
             Cadastrar órgão público
           </Modal.Title>
-          <FaTimes onClick={(e) => setShowModalAddGov(false)} />
+          <FaTimes onClick={() => setShowModalAddGov(false)} />
         </Modal.Header>
         <Modal.Body>
           <GovernmentForm
@@ -874,7 +884,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
         <Modal.Footer>
           <button
             className="btn btn-danger"
-            onClick={(e) => setShowModalAddGov(false)}
+            onClick={() => setShowModalAddGov(false)}
           >
             Fechar
           </button>
@@ -886,7 +896,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
           <Modal.Title style={{ textTransform: "uppercase" }}>
             {titleEmpenho}
           </Modal.Title>
-          <FaTimes onClick={(e) => setShowModalEmpenho(false)} />
+          <FaTimes onClick={() => setShowModalEmpenho(false)} />
         </Modal.Header>
         <Modal.Body>
           <FormEmpenho handleSubmit={createUpdateEmpenho} data={empenho} />
@@ -894,7 +904,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
         <ModalFooter>
           <button
             className="btn btn-danger"
-            onClick={(e) => setShowModalEmpenho(false)}
+            onClick={() => setShowModalEmpenho(false)}
           >
             Fechar
           </button>
@@ -912,16 +922,16 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
           <Modal.Title style={{ textTransform: "uppercase" }}>
             {titleItem}
           </Modal.Title>
-          <FaTimes onClick={(e) => setShowModalItem(false)} />
+          <FaTimes onClick={() => setShowModalItem(false)} />
         </Modal.Header>
 
         <ModalBody>
-          <Item data={item || {}} handleSubmit={createUpdateItem} />
+          <Item data={item || {}} handleSubmitForm={createUpdateItem} />
         </ModalBody>
         <Modal.Footer>
           <button
             className="btn btn-danger"
-            onClick={(e) => setShowModalItem(false)}
+            onClick={() => setShowModalItem(false)}
           >
             Fechar
           </button>
