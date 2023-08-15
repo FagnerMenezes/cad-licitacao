@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -34,7 +35,6 @@ const ListSearch = ({ list, dataList, fieldset }) => {
   }
 
   const filterItems = governmentList.filter((data) =>
-    // console.log("🚀 ~ file: ListSearch.jsx:41 ~ ListSearch ~ filterItems:", data)
     data[`${fieldset}`].toLowerCase().includes(value.toLocaleLowerCase())
   );
 
@@ -46,13 +46,13 @@ const ListSearch = ({ list, dataList, fieldset }) => {
       />
       {value.length > 0 ? (
         <>
-          <ul>
-            {filterItems.map((item) => (
+          <ul className="overflow-y-auto max-h-44 px-5">
+            {filterItems.map((item, i) => (
               <ItemList
                 key={item._id}
                 onDoubleClick={() => selectListItem(item)}
               >
-                {item[`${fieldset}`]}
+                {i + 1} - {item[`${fieldset}`]}
               </ItemList>
             ))}
           </ul>
@@ -65,5 +65,9 @@ const ListSearch = ({ list, dataList, fieldset }) => {
     </>
   );
 };
-
+ListSearch.propTypes = {
+  list: PropTypes.array,
+  dataList: PropTypes.object,
+  fieldset: PropTypes.string,
+};
 export default ListSearch;

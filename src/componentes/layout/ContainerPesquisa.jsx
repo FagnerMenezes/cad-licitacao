@@ -1,20 +1,7 @@
+import PropTypes from "prop-types";
 import { Spinner } from "react-bootstrap";
-import styled from "styled-components";
-import Input from "../form/Input";
 import { FaSearch } from "react-icons/fa";
-
-const Container = styled.div`
-  display: flex;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-around;
-  background-color: white;
-  width: 85vw;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-`;
-
+import Input from "../form/Input";
 const ContainerPesquisa = ({
   handleDateInit,
   handleDateEnd,
@@ -99,4 +86,14 @@ const ContainerPesquisa = ({
     </div>
   );
 };
+ContainerPesquisa.propTypes = {
+  handleDateInit: PropTypes.func,
+  handleDateEnd: PropTypes.func,
+  handleChangeLocalizar: PropTypes.func,
+  dateInicio: PropTypes.string,
+  dateFim: PropTypes.string,
+  exibeDate: PropTypes.bool,
+  isOpen: PropTypes.bool,
+};
+
 export default ContainerPesquisa;

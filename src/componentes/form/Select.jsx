@@ -25,9 +25,11 @@ function Select({
           onChange={handleOnChange}
           value={value || ""}
         >
-          <option value="0">Selecione uma opção</option>
+          <option value="0" key="0">
+            Selecione uma opção
+          </option>
           {options.map((item) => (
-            <option value={item.id} key={item.id} className="text-xs">
+            <option key={item.id} value={item.id} className="text-xs">
               {item?.name ? item.name : item.sigla}
             </option>
           ))}

@@ -1,5 +1,5 @@
+import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
-
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -24,12 +24,13 @@ const Body = styled.div`
   width: 500px;
   text-align: center;
   ${(props) =>
-    props.type === 'erro' ?
-    css`
-      background: #f17373;
-      color: white;
-      border: 2px solid #f17373;
-    `:''};  
+    props.type === "erro"
+      ? css`
+          background: #f17373;
+          color: white;
+          border: 2px solid #f17373;
+        `
+      : ""};
 `;
 
 const Texto = styled.p`
@@ -37,15 +38,17 @@ const Texto = styled.p`
   color: white;
 `;
 
-const Message = ({ text, tipo}) => {
-  
+const Message = ({ text, tipo }) => {
   return (
-    <Container >
-        <Body type={tipo}>
-          <Texto>{text}</Texto>     
-        </Body>
+    <Container>
+      <Body type={tipo}>
+        <Texto>{text}</Texto>
+      </Body>
     </Container>
   );
 };
-
+Message.propTypes = {
+  text: PropTypes.string,
+  tipo: PropTypes.string,
+};
 export default Message;

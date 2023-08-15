@@ -156,11 +156,17 @@ function Empenhos() {
         status: note.status_note ? note.status_note.name : "",
         e: (
           <span onClick={(e) => deleteEmpenho(e, note._id)}>
-            <BtnLink icon={<FaTrash />} size="sm" type="danger" exibe={true} />
+            <BtnLink
+              icon={<FaTrash />}
+              size="sm"
+              type="danger"
+              exibe={true}
+              title={""}
+            />
           </span>
         ),
         d: (
-          <span onClick={(e) => enviarDadosEditar(note._id)}>
+          <span onClick={() => enviarDadosEditar(note._id)}>
             <BtnLink icon={<FaEdit />} size="sm" type="success" exibe={true} />
           </span>
         ),
@@ -197,7 +203,7 @@ function Empenhos() {
       <Modal show={showModal} size="lg">
         <ModalHeader>
           <ModalTitle>CADASTRAR EMPENHO</ModalTitle>
-          <FaTimes onClick={(e) => setShowModal(false)} />
+          <FaTimes onClick={() => setShowModal(false)} />
         </ModalHeader>
         <ModalBody>
           <FormEmpenho data={{}} op={1} handleSubmit={refreshPage} />
@@ -206,7 +212,7 @@ function Empenhos() {
       <Modal show={showModalEdit} size="lg">
         <ModalHeader>
           <ModalTitle>EDITAR EMPENHO</ModalTitle>
-          <FaTimes onClick={(e) => setShowModalEdit(false)} />
+          <FaTimes onClick={() => setShowModalEdit(false)} />
         </ModalHeader>
         <ModalBody>
           <FormEmpenho data={empenho} op={2} handleSubmit={refreshPage} />

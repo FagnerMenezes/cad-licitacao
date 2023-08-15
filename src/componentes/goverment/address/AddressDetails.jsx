@@ -1,4 +1,4 @@
-//import { useState } from "react";
+import PropTypes from "prop-types";
 import { FaEdit, FaPhone, FaTrash } from "react-icons/fa";
 export function AddressDetails({
   data,
@@ -6,8 +6,6 @@ export function AddressDetails({
   editAddress,
   deleteAddress,
 }) {
-  //const [orgaos, setOrgaos] = useState(data || {});
-
   return (
     <>
       <div className="flex flex-col p-2">
@@ -16,13 +14,13 @@ export function AddressDetails({
           <span className="text-blue-700 font-bold">Endereços</span>
         </div>
 
-        <div className="flex border rounded-md p-3 mt-2 container overflow-x-scroll sm:overflow-hidden">
+        <div className="flex border rounded-md p-3 mt-2 container overflow-x-auto">
           <div className="flex flex-col">
             <div className="flex mb-2">
               <button
                 type="button"
                 className="btn btn-outline-primary btn-sm"
-                onClick={(e) => openModal()}
+                onClick={() => openModal()}
                 style={{ width: "100px" }}
               >
                 Novo
@@ -88,3 +86,9 @@ export function AddressDetails({
     </>
   );
 }
+AddressDetails.propTypes = {
+  data: PropTypes.object,
+  openModal: PropTypes.func,
+  editAddress: PropTypes.func,
+  deleteAddress: PropTypes.func,
+};

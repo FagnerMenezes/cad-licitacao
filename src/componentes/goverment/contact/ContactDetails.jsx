@@ -1,6 +1,5 @@
-//import { useState } from "react";
+import PropTypes from "prop-types";
 import { FaEdit, FaPhone, FaTrash } from "react-icons/fa";
-
 export function ContactDetails({ data, openModal, getContact, deleteContact }) {
   function openModalContact() {
     openModal();
@@ -15,7 +14,7 @@ export function ContactDetails({ data, openModal, getContact, deleteContact }) {
           <span className="text-blue-700 font-bold">Contatos</span>
         </div>
 
-        <div className="flex flex-col border rounded-md p-3 container overflow-x-scroll sm:overflow-hidden">
+        <div className="flex flex-col border rounded-md p-3 container overflow-x-auto">
           <div className="flex mb-2">
             <button
               type="button"
@@ -85,3 +84,10 @@ export function ContactDetails({ data, openModal, getContact, deleteContact }) {
     </>
   );
 }
+
+ContactDetails.propTypes = {
+  data: PropTypes.object,
+  openModal: PropTypes.func,
+  getContact: PropTypes.func,
+  deleteContact: PropTypes.func,
+};

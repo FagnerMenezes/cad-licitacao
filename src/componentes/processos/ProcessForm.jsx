@@ -1,6 +1,6 @@
-import api from "@/services/api";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useEffect, useMemo, useState } from "react";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { Modal, ModalBody, ModalFooter, Tab, Tabs } from "react-bootstrap";
 import {
   FaCloudDownloadAlt,
@@ -16,7 +16,6 @@ import {
 import InputFloat from "../form/InputFloat";
 import SubmitButton from "../form/SubmitButton";
 
-import useFetch from "@/hooks/UseFetch";
 import { FormEmpenho, Item, ListSearch, Pagination } from "@/services/index";
 import uuid from "react-uuid";
 import Swal from "sweetalert2";
@@ -24,6 +23,7 @@ import GovernmentForm from "../goverment/GovernmentForm";
 import DadosGerais from "./DadosGerais";
 import LinksProcesso from "./LinksProcesso";
 import Proposta from "./Proposta";
+import { UseProcessForm } from "./useProcessForm";
 
 const process = {
   process_data: { modality: "", portal: "", status: "", type_dispute: "" },
@@ -36,14 +36,11 @@ const process = {
 };
 
 function ProcessForm({ handleSubmit, processData, btnText }) {
-  const [org, setOrg] = useState([] || null);
+  const { getDataGovernment, org } = UseProcessForm();
   const [orgEdit, setOrgEdit] = useState([] || null);
   const [processo, setProcess] = useState(processData || process);
   const [empenho, setEmpenho] = useState({});
   const [item, setItem] = useState({});
-  const [modalidades, setModalidades] = useState([]);
-  const [portais, setPortais] = useState([]);
-  const [tipoDisputas, setTipoDisputas] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModalAddGov, setShowModalAddGov] = useState(false);
   const [showModalEditGov, setShowModalEditGov] = useState(false);
@@ -51,59 +48,14 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
   const [showModalItem, setShowModalItem] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [statusProc, setStatusProc] = useState([]);
-  //const [modalConfig, setModalConfig] = useState(false);
-  // const [titleModalConfig, settitleModalConfig] = useState("");
   const [titleEmpenho, setTitleEmpenho] = useState("");
   const [titleItem, setTitleItem] = useState("");
   const [actionEmpenho, setActionEmpenho] = useState(0);
   const [actionItem, setActionItem] = useState(0);
-  //const [proposta, setProposta] = useState({} || null);
 
-  async function getDataGovernment() {
-    try {
-      const response = await useFetch.get("processos?", {
-        start: "1990-01-01",
-        end: "2050-12-31",
-        skip: 0,
-        limit: 1000,
-      });
-
-      const dataset = response.data.process
-        .flatMap((item) => item.government)
-        .filter((item) => item !== null);
-      const newGovernment = new Set();
-      const filterGovernment = dataset.filter((government) => {
-        const duplicatedPerson = newGovernment.has(government.cnpj);
-
-        newGovernment.add(government.cnpj);
-        return !duplicatedPerson;
-      });
-
-      setOrg(filterGovernment);
-    } catch (error) {
-      console.error(error);
-    }
-  }
   useEffect(() => {
     getDataGovernment();
   }, [refresh]);
-  useMemo(() => {
-    api.get("modalidades").then((response) => {
-      setModalidades(response.data);
-    });
-
-    api.get("portais").then((response) => {
-      setPortais(response.data);
-    });
-
-    api.get("tipo_disputa").then((response) => {
-      setTipoDisputas(response.data);
-    });
-    api.get("status").then((response) => {
-      setStatusProc(response.data);
-    });
-  }, []);
 
   function getEditOrgao(codigo) {
     if (!codigo) {
@@ -169,7 +121,12 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
 
   const submit = (e) => {
     e.preventDefault();
-    handleSubmit(processo);
+    try {
+      handleSubmit(processo);
+      setRefresh(!refresh);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   function enviarNotes() {
@@ -220,13 +177,6 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
     });
     setShowModalAddGov(false);
   }
-
-  // function abrirModalConfig(e, mongoCollection, title) {
-  //   e.preventDefault();
-  //   setModalConfig(true);
-  //   settitleModalConfig(title);
-  //   setRefresh(false);
-  // }
 
   //DADOS EMPENHOS DO PROCESSO
   const createEmpenho = (empenho) => {
@@ -416,22 +366,30 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
               <br />
               <div className="row">
                 <div className="col-md-12 ">
+                  <label className="font-bold text-sm uppercase">
+                    Unidade gerenciadora
+                  </label>
                   <div className="input-group mb-3">
                     <input
                       className="form-control "
                       type="text"
                       name="name"
                       placeholder="Informe o nome do órgão"
-                      value={processo.government
-                        .filter((data) => data.manager === "true")
-                        .map((item) => {
-                          return item.name;
-                        })}
+                      value={
+                        processo != null
+                          ? processo.government
+                              .filter((data) => data.manager === "true")
+                              .map((item) => {
+                                return item.name;
+                              })
+                          : {}
+                      }
                       required="required"
                       readOnly={true}
                     />
 
-                    {processo.government.length > 0 &&
+                    {processo != null &&
+                    processo.government.length > 0 &&
                     processo.government[0]._id ? (
                       <span
                         className="input-group-text"
@@ -472,8 +430,8 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                   </div>
                 </div>
                 <div className={`col-md-4`}>
-                  <label className="form-control-label">
-                    <strong>Nº da UASG/COD/UGE</strong>
+                  <label className="form-control-label uppercase font-bold text-sm">
+                    Nº da UASG/COD/UGE
                   </label>
                   <input
                     className="form-control"
@@ -482,13 +440,44 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                     placeholder="Informe o nº do uasg/oc"
                     required="required"
                     readOnly
-                    value={processo.government
-                      .filter((data) => data.manager === "true")
-                      .map((item) => {
-                        return item.code_government;
-                      })}
+                    value={
+                      processo != null &&
+                      processo.government
+                        .filter((data) => data.manager === "true")
+                        .map((item) => {
+                          return item.code_government;
+                        })
+                    }
                   />
                 </div>
+                <dl className="flex flex-col gap-1 mt-2">
+                  {processo != null &&
+                    processo.government
+                      .filter((data) => data.manager === "true")
+                      .map((item) => (
+                        <>
+                          <dt>CNPJ</dt>
+                          <dd>
+                            {String(item.cnpj).replace(
+                              /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+                              "$1.$2.$3/$4-$5"
+                            )}
+                          </dd>
+                          <dt>CONTATO</dt>
+                          <dd>{item.contact[0].tipo}</dd>
+                          <dd>{item.contact[0].name}</dd>
+                          <dd>{item.contact[0].contact}</dd>
+                          <dt>ENDEREÇO</dt>
+                          <dd>{item.address[0].type_address}</dd>
+                          <dd>
+                            {item.address[0].street}-{item.address[0].number}
+                          </dd>
+                          <dd>{item.address[0].district}</dd>
+                          <dd>{item.address[0].city}</dd>
+                          <dd>{item.address[0].uf}</dd>
+                        </>
+                      ))}
+                </dl>
               </div>
             </Tab>
             <Tab eventKey="dados" title="Dados gerais">
@@ -496,8 +485,6 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
               <DadosGerais getDados={getDadosGerais} data={processo} />
             </Tab>
             <Tab eventKey="termo" title="Termo">
-              <br />
-
               <div className="row">
                 <div className="col-sm-4">
                   <InputFloat
@@ -506,7 +493,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                     type="text"
                     placeholder={"Prazo de entrega"}
                     value={
-                      processo.reference_term
+                      processo != null && processo.reference_term
                         ? processo.reference_term.deadline
                         : ""
                     }
@@ -518,7 +505,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                     type="text"
                     placeholder={"Garantia"}
                     value={
-                      processo.reference_term
+                      processo !== null && processo.reference_term
                         ? processo.reference_term.guarantee
                         : ""
                     }
@@ -530,7 +517,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                     type="text"
                     placeholder={"Validade"}
                     value={
-                      processo.reference_term
+                      processo != null && processo.reference_term
                         ? processo.reference_term.validity
                         : ""
                     }
@@ -551,21 +538,12 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                     </label>
                   </p>
                   <textarea
-                    style={{
-                      width: "100%",
-                      outline: "none",
-                      border: "1px solid #3951b2",
-                      borderRadius: "5px",
-                      color: "blue",
-                      height: "70%",
-                    }}
+                    className="text-justify text-sm w-full border rounded-md outline-none h-full p-1 "
                     name="comments"
                     onChange={(e) => handleTermItem(e)}
                   >
-                    {processo.reference_term.comments ||
-                      `Declaramos que estamos de pleno acordo com todas as condições estabelecidas no Edital e seus Anexos.
-                       Declaramos que os produtos a serem entregues serão novos e nunca antes utilizados. 
-                       Declaramos que nos preços cotados estão incluídas todas as despesas que, direta ou indiretamente, fazem parte do presente objeto`}
+                    {(processo != null && processo.reference_term?.comments) ||
+                      `Declaramos que estamos de pleno acordo com todas as condições estabelecidas no Edital e seus Anexos. Declaramos que os produtos a serem entregues serão novos e nunca antes utilizados. Declaramos que nos preços cotados estão incluídas todas as despesas que, direta ou indiretamente, fazem parte do presente objeto`}
                   </textarea>
                 </div>
               </div>
@@ -591,7 +569,8 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
               </div>
               <hr className="hr" />
               <div className="row">
-                {processo.reference_term.itens &&
+                {processo != null &&
+                  processo.reference_term?.itens &&
                   (processo.reference_term.itens.length > 0 ? (
                     <>
                       <br />
@@ -625,7 +604,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                 </div>
                 <br />
                 <div className="row">
-                  {processo.note_commitment && (
+                  {processo != null && processo.note_commitment && (
                     <>
                       <table className="table table-sm table-striped">
                         <thead>
@@ -640,50 +619,53 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                           </tr>
                         </thead>
                         <tbody>
-                          {processo.note_commitment.map((item) => (
-                            <>
-                              <tr key={item._id} style={{ fontSize: "12px" }}>
-                                <td hidden>{item._id}</td>
-                                <td>{item.code_note}</td>
-                                <td>
-                                  {parseFloat(
-                                    item.value_note.$numberDecimal
-                                  ).toLocaleString("pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL",
-                                  })}
-                                </td>
-                                <td>{item.status_note.name}</td>
-                                <td>
-                                  <a
-                                    href={item.attachment}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    <FaCloudDownloadAlt />
-                                  </a>
-                                </td>
-                                <td>
-                                  <button
-                                    className="btn btn-sm btn-outline-success"
-                                    onClick={(e) =>
-                                      abrirModalEmpenho(e, 2, item._id)
-                                    }
-                                  >
-                                    <FaEdit />
-                                  </button>
-                                </td>
-                                <td>
-                                  <button
-                                    className="btn btn-sm btn-outline-danger"
-                                    onClick={(e) => deleteEmpenho(e, item._id)}
-                                  >
-                                    <FaTrash />
-                                  </button>
-                                </td>
-                              </tr>
-                            </>
-                          ))}
+                          {processo != null &&
+                            processo.note_commitment.map((item) => (
+                              <>
+                                <tr key={item._id} style={{ fontSize: "12px" }}>
+                                  <td hidden>{item._id}</td>
+                                  <td>{item.code_note}</td>
+                                  <td>
+                                    {parseFloat(
+                                      item.value_note.$numberDecimal
+                                    ).toLocaleString("pt-BR", {
+                                      style: "currency",
+                                      currency: "BRL",
+                                    })}
+                                  </td>
+                                  <td>{item.status_note.name}</td>
+                                  <td>
+                                    <a
+                                      href={item.attachment}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <FaCloudDownloadAlt />
+                                    </a>
+                                  </td>
+                                  <td>
+                                    <button
+                                      className="btn btn-sm btn-outline-success"
+                                      onClick={(e) =>
+                                        abrirModalEmpenho(e, 2, item._id)
+                                      }
+                                    >
+                                      <FaEdit />
+                                    </button>
+                                  </td>
+                                  <td>
+                                    <button
+                                      className="btn btn-sm btn-outline-danger"
+                                      onClick={(e) =>
+                                        deleteEmpenho(e, item._id)
+                                      }
+                                    >
+                                      <FaTrash />
+                                    </button>
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
                         </tbody>
                       </table>
 
@@ -696,7 +678,8 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                       >
                         <strong>Total geral:</strong>
                         <div style={{ color: "blue", fontWeight: "bolder" }}>
-                          {processo.note_commitment.length > 0 &&
+                          {processo != null &&
+                            processo.note_commitment.length > 0 &&
                             processo.note_commitment
                               .map((item) =>
                                 parseFloat(item.value_note.$numberDecimal)
@@ -720,16 +703,17 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
             <Tab eventKey="Anotacoes" title="Anotações">
               <div className="container">
                 <div className="row">
-                  {processo.notes && (
+                  {processo != null && processo.notes && (
                     <ul>
-                      {processo.notes.map((item) => (
-                        <>
-                          <li>
-                            {item.comments} :{" "}
-                            {new Date(item.createdAt).toLocaleDateString()}
-                          </li>
-                        </>
-                      ))}
+                      {processo != null &&
+                        processo.notes.map((item) => (
+                          <>
+                            <li>
+                              {item.comments} :{" "}
+                              {new Date(item.createdAt).toLocaleDateString()}
+                            </li>
+                          </>
+                        ))}
                     </ul>
                   )}
                 </div>
@@ -753,13 +737,20 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
             </Tab>
             <Tab eventKey="Links" title="Links">
               <LinksProcesso
-                edital={processo.process_data.bidding_notice}
-                uasg={processo.government
-                  .filter((data) => data.manager === "true")
-                  .map((item) => {
-                    return item.code_government;
-                  })}
-                portal={processo.process_data.portal.name}
+                edital={
+                  processo != null && processo.process_data.bidding_notice
+                }
+                uasg={
+                  processo != null &&
+                  processo.government
+                    .filter(
+                      (data) => data.manager === "true" || data.manager === true
+                    )
+                    .map((item) => {
+                      return item.code_government;
+                    })
+                }
+                portal={processo != null && processo.process_data.portal}
               />
             </Tab>
             <Tab eventKey="uasg_participantes" title="Uasg participantes">
@@ -772,26 +763,27 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {processo.government
-                    .filter((org) => org.manager?.includes("false"))
-                    .map((item) => {
-                      return (
-                        <tr key={item._id}>
-                          <td>{item.name}</td>
-                          <td>{item.cnpj}</td>
-                          <td>{item.code_government}</td>
-                        </tr>
-                      );
-                    })}
+                  {processo != null &&
+                    processo.government
+                      .filter((org) => org.manager?.includes("false"))
+                      .map((item) => {
+                        return (
+                          <tr key={item._id}>
+                            <td>{item.name}</td>
+                            <td>{item.cnpj}</td>
+                            <td>{item.code_government}</td>
+                          </tr>
+                        );
+                      })}
                 </tbody>
               </table>
             </Tab>
           </Tabs>
-        </div>
-
-        <br />
-        <div className="flex w-full">
-          <SubmitButton text={btnText} />
+          <br />
+          <div className="border-b-2 w-full "></div>
+          <div className="flex w-full mt-2">
+            <SubmitButton text={btnText} />
+          </div>
         </div>
       </form>
 
@@ -940,5 +932,9 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
     </div>
   );
 }
-
+ProcessForm.propTypes = {
+  handleSubmit: PropTypes.func,
+  processData: PropTypes.array,
+  btnText: PropTypes.string,
+};
 export default ProcessForm;

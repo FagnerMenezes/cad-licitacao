@@ -1,7 +1,8 @@
-import { useAddress } from "./useAddress";
+import { states } from "@/services/UF";
+import PropTypes from "prop-types";
 import { FaFilter } from "react-icons/fa";
-import { states } from "../../../services/UF";
 import { type_address } from "./schema";
+import { useAddress } from "./useAddress";
 export function AddressForm({ handleSubmitEndereco, endData, btnText }) {
   const { buscarcep, errors, handleSubmit, register } = useAddress({ endData });
 
@@ -124,3 +125,8 @@ export function AddressForm({ handleSubmitEndereco, endData, btnText }) {
     </>
   );
 }
+AddressForm.propTypes = {
+  handleSubmitEndereco: PropTypes.func,
+  endData: PropTypes.object,
+  btnText: PropTypes.string,
+};

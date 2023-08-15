@@ -6,6 +6,7 @@ import * as y from "yup";
 const schemaItem = y.object().shape({
   cod: y.string().required("Campo código é obrigatório"),
   winner: y.boolean(),
+  amount: y.number().required("Campo quantidade obrigatório"),
   lote: y.string(),
   unit: y.string().required("Campo unidade de referência é obrigatório"),
   description: y.string().required("Campo descrição é obrigatório"),
@@ -21,9 +22,7 @@ const schemaItem = y.object().shape({
       .string()
       .required("Campo valor de referência é obrigatório"),
   }),
-  item_balance: y.object({
-    $numberDecimal: y.string().required("Campo saldo da ata é obrigatório"),
-  }),
+  item_balance: y.number().required("Campo saldo da ata é obrigatório"),
 });
 
 const Item = ({ data, handleSubmitForm }) => {
@@ -72,6 +71,9 @@ const Item = ({ data, handleSubmitForm }) => {
             placeholder={"Qtde"}
             title="Quantidade"
           />
+          {errors.amount && (
+            <p className="text-red-500">{errors.amount.message}</p>
+          )}
           <div className="flex flex-col w-full border rounded-md">
             <select
               {...register("unit")}
@@ -135,17 +137,15 @@ const Item = ({ data, handleSubmitForm }) => {
           />
 
           <input
-            {...register("item_balance.$numberDecimal")}
+            {...register("item_balance")}
             className="outline-none border rounded-md p-1"
-            type="text"
-            name="item_balance.$numberDecimal"
+            type="number"
+            name="item_balance"
             placeholder={"Saldo da ata"}
             title="Saldo da ata"
           />
           {errors.item_balance && (
-            <p className="text-red-500">
-              {errors.item_balance.$numberDecimal.message}
-            </p>
+            <p className="text-red-500">{errors.item_balance.message}</p>
           )}
 
           <label className="flex justify-start items-center gap-3 text-slate-400 w-full border rounded-md p-1">

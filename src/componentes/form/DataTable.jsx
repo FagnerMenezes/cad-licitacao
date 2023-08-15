@@ -1,5 +1,6 @@
-import DataTable from "react-data-table-component";
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 import Loader from "../layout/Loader";
 
 const DtTable = ({ coll, ds, titulo, conditionalRowStyles }) => {
@@ -38,5 +39,10 @@ const DtTable = ({ coll, ds, titulo, conditionalRowStyles }) => {
     </>
   );
 };
-
+DtTable.propTypes = {
+  coll: PropTypes.array,
+  ds: PropTypes.array,
+  conditionalRowStyles: PropTypes.array,
+  titulo: PropTypes.string,
+};
 export default DtTable;

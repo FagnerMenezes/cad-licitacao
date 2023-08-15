@@ -1,4 +1,5 @@
-import { FaDownload, FaLink } from "react-icons/fa";
+import PropTypes from "prop-types";
+import { FaDownload } from "react-icons/fa";
 
 const LinksProcesso = ({ edital, uasg, portal }) => {
   function Download_Edital_Comprasnet(e, uasg, edital) {
@@ -47,7 +48,7 @@ const LinksProcesso = ({ edital, uasg, portal }) => {
               <tr>
                 <td>DOWNLOAD EDITAL:</td>
                 <td>
-                  <span className="btn btn-outline-primary ">
+                  <span className="btn btn-outline-primary">
                     <FaDownload
                       onClick={(e) =>
                         Download_Edital_Comprasnet(e, uasg, edital)
@@ -78,5 +79,9 @@ const LinksProcesso = ({ edital, uasg, portal }) => {
     </>
   );
 };
-
+LinksProcesso.propTypes = {
+  edital: PropTypes.string,
+  uasg: PropTypes.string,
+  portal: PropTypes.string,
+};
 export default LinksProcesso;

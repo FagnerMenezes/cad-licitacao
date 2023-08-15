@@ -1,8 +1,11 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
+import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ImNext2, ImPrevious2 } from "react-icons/im";
 import ReactPaginate from "react-paginate";
-const SomarItens = ({ data }) => {
+
+const PaginationFooter = ({ data }) => {
   return (
     <>
       <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
@@ -25,27 +28,27 @@ const SomarItens = ({ data }) => {
   );
 };
 
-const Pagination = ({
-  items,
-  itemsPerPage,
+const Items = ({
   handleEditItem,
   handleDeleteItem,
+  currentItems,
+  children,
 }) => {
-  function Items({ currentItems }) {
-    const editItem = (e, idItem) => {
-      e.preventDefault();
+  //console.log(items);
+  const editItem = (e, idItem) => {
+    e.preventDefault();
+    handleEditItem(2, idItem);
+  };
 
-      handleEditItem(2, idItem);
-    };
-
-    const deleteItem = (e, idItem) => {
-      e.preventDefault();
-      handleDeleteItem(idItem);
-    };
-    return (
-      <>
-        <div className="container overflow-x-auto ">
-          {currentItems && (
+  const deleteItem = (e, idItem) => {
+    e.preventDefault();
+    handleDeleteItem(idItem);
+  };
+  return (
+    <>
+      {currentItems && (
+        <>
+          <div className="container overflow-x-auto ">
             <table className="table-auto min-w-full text-sm font-light">
               <thead className="border-b bg-blue-600 text-white p-2">
                 <tr className="text-center p-2">
@@ -58,7 +61,7 @@ const Pagination = ({
                   <th>V.UNIT </th>
                   <th>V.REF</th>
                   <th>TOTAL</th>
-                  <th>Arrem.</th>
+                  <th>ARREMATADO</th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -103,12 +106,12 @@ const Pagination = ({
                           currency: "BRL",
                         })}
                       </td>
-                      <td className="text-center">
-                        <input
-                          type={"checkbox"}
-                          checked={item.winner ? true : false}
-                          readOnly
-                        ></input>
+                      <td className="flex justify-center text-center p-2 items-center">
+                        {item.winner === "true" || item.winner === true ? (
+                          <AiOutlineLike className="text-emerald-500 text-lg" />
+                        ) : (
+                          <AiOutlineDislike className="text-red-500 text-lg" />
+                        )}
                       </td>
                       <td className="text-center text-emerald-500">
                         <FaEdit onClick={(e) => editItem(e, item._id)} />
@@ -120,31 +123,20 @@ const Pagination = ({
                   </>
                 ))}
               </tbody>
-              <tfoot></tfoot>
             </table>
-          )}
-          <SomarItens data={items} />
-        </div>
-      </>
-    );
-  }
+          </div>
+          <div className="flex justify-end items-center p-2 w-full">
+            {children}
+          </div>
+        </>
+      )}
+    </>
+  );
+};
 
-  const [itemOffset, setItemOffset] = useState(0);
-
-  const endOffset = itemOffset + itemsPerPage;
-  //console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = items.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(items.length / itemsPerPage);
-
-  // Invoke when user click to request another page.
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % items.length;
-    setItemOffset(newOffset);
-  };
-
+const PaginationNav = ({ handlePageClick, pageCount }) => {
   return (
     <>
-      <Items currentItems={currentItems} />
       <nav>
         <ReactPaginate
           breakLabel="..."
@@ -168,4 +160,57 @@ const Pagination = ({
   );
 };
 
+const Pagination = ({
+  items,
+  itemsPerPage,
+  handleEditItem,
+  handleDeleteItem,
+}) => {
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = items.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(items.length / itemsPerPage);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % items.length;
+    setItemOffset(newOffset);
+  };
+
+  return (
+    <>
+      <Items
+        currentItems={currentItems}
+        handleDeleteItem={handleDeleteItem}
+        handleEditItem={handleEditItem}
+        items={items}
+      >
+        <PaginationFooter data={items} />
+      </Items>
+      <PaginationNav handlePageClick={handlePageClick} pageCount={pageCount} />
+    </>
+  );
+};
+
+PaginationFooter.propTypes = {
+  data: PropTypes.object,
+};
+
+Pagination.propTypes = {
+  items: PropTypes.array,
+  itemsPerPage: PropTypes.number,
+  handleEditItem: PropTypes.func,
+  handleDeleteItem: PropTypes.func,
+};
+Items.propTypes = {
+  handleEditItem: PropTypes.func,
+  handleDeleteItem: PropTypes.func,
+  currentItems: PropTypes.array,
+  items: PropTypes.array,
+  children: PropTypes.array,
+};
+PaginationNav.propTypes = {
+  handlePageClick: PropTypes.func,
+  pageCount: PropTypes.number,
+};
 export default Pagination;

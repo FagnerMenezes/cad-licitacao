@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
-import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const ButtonLink = styled.button`
@@ -90,39 +89,7 @@ const ButtonLink = styled.button`
 `;
 
 const Links = styled.div``;
-
-// function BtnLink({
-//   to,
-//   text,
-//   title,
-//   icon,
-//   handleClick,
-//   type,
-//   exibe = true,
-//   size,
-// }) {
-//   return (
-//     <>
-//       <ButtonLink size={size} type={type} exibir={exibe}>
-//         <Links data-toogle="tooltip" title={title}>
-//           <Link to={to} id="kid">
-//             {text}
-//             {icon}
-//           </Link>
-//         </Links>
-//       </ButtonLink>
-//     </>
-//   );
-// }
-
-function BtnLink({ to, text, title, icon, handleClick, type, exibe, size }) {
-  const handleButtonClick = (event) => {
-    event.preventDefault();
-    if (handleClick) {
-      handleClick(event);
-    }
-  };
-
+function BtnLink({ to, text, title, icon, type, exibe, size }) {
   return exibe ? (
     <>
       <ButtonLink size={size} type={type} exibir={exibe}>
@@ -138,16 +105,13 @@ function BtnLink({ to, text, title, icon, handleClick, type, exibe, size }) {
 }
 
 BtnLink.propTypes = {
-  to: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  to: PropTypes.string,
+  text: PropTypes.string,
+  title: PropTypes.string,
   icon: PropTypes.node,
-  handleClick: PropTypes.func,
   type: PropTypes.oneOf(["primary", "secondary"]),
   exibe: PropTypes.bool,
   size: PropTypes.oneOf(["small", "medium", "large"]),
 };
 
 export default BtnLink;
-
-//export default BtnLink;

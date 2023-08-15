@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { FaDatabase, FaTimes } from "react-icons/fa";
-import InputFloat from "../form/InputFloat";
-import Input from "../form/Input";
-import Select from "../form/Select";
-import api from "../../services/api";
 import { Modal, ModalFooter } from "react-bootstrap";
+import { FaTimes } from "react-icons/fa";
+import api from "../../services/api";
 import FormConfig from "../form/FormConfig";
+import Input from "../form/Input";
+import InputFloat from "../form/InputFloat";
+import Select from "../form/Select";
 
 const DadosGerais = ({ getDados, data }) => {
   // console.log(data);
@@ -166,7 +166,7 @@ const DadosGerais = ({ getDados, data }) => {
             name="date_init"
             handleOnChange={handleOnChange}
             value={
-              processData.process_data.date_init
+              processData != null && processData.process_data?.date_init
                 ? new Date(processData.process_data.date_init)
                     .toISOString()
                     .split("T")[0]
@@ -182,7 +182,7 @@ const DadosGerais = ({ getDados, data }) => {
             name="date_finish"
             handleOnChange={handleOnChange}
             value={
-              processData.process_data.date_finish
+              processData != null && processData.process_data.date_finish
                 ? new Date(processData.process_data.date_finish)
                     .toISOString()
                     .split("T")[0]

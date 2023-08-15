@@ -1,7 +1,6 @@
-import styled from "styled-components";
-import { FaUser, FaBell, FaHamburger, FaList } from "react-icons/fa";
-import { GiBangingGavel } from "react-icons/gi";
 import Avatar from "@mui/material/Avatar";
+import { FaBell } from "react-icons/fa";
+import styled from "styled-components";
 import avatar from "../../assets/img/meuAvatar.png";
 const Container = styled.div`
   /* display: flex;

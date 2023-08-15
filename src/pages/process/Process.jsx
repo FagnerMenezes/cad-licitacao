@@ -1,5 +1,3 @@
-import { useProcess } from "./useProcess";
-import { col, conditionalRowStyles } from "./TableConfig";
 import {
   Modal,
   ModalBody,
@@ -7,17 +5,19 @@ import {
   ModalHeader,
   ModalTitle,
 } from "react-bootstrap";
-import { FaTimes } from "react-icons/fa";
+import { FaDatabase, FaTimes } from "react-icons/fa";
+import GovernmentForm from "../../componentes/goverment/GovernmentForm";
 import {
-  ProcessForm,
-  DataTable,
+  ContainerBody,
   ContainerGeral,
   ContainerHeader,
-  ContainerBody,
   ContainerPesquisa,
   ContainerTable,
+  DataTable,
+  ProcessForm,
 } from "../../services/index";
-import GovernmentForm from "../../componentes/goverment/GovernmentForm";
+import { col, conditionalRowStyles } from "./TableConfig";
+import { useProcess } from "./useProcess";
 
 function Process() {
   const {
@@ -48,7 +48,7 @@ function Process() {
           <ModalTitle style={{ textTransform: "uppercase" }}>
             {titleModal}
           </ModalTitle>
-          <FaTimes onClick={(e) => setShowModal(false)} />
+          <FaTimes onClick={() => setShowModal(false)} />
         </ModalHeader>
         <ModalBody style={{ backgroundColor: "#f5f3f3" }}>
           <div className="container">
@@ -62,7 +62,7 @@ function Process() {
         <ModalFooter>
           <button
             className="btn btn-danger"
-            onClick={(e) => setShowModal(false)}
+            onClick={() => setShowModal(false)}
           >
             Fechar
           </button>
@@ -82,7 +82,7 @@ function Process() {
           >
             Editar órgão público
           </Modal.Title>
-          <FaTimes onClick={(e) => setShowModalEditGov(false)} />
+          <FaTimes onClick={() => setShowModalEditGov(false)} />
         </Modal.Header>
         <Modal.Body>
           <GovernmentForm></GovernmentForm>
@@ -90,7 +90,7 @@ function Process() {
         <Modal.Footer>
           <button
             className="btn btn-danger"
-            onClick={(e) => setShowModalEditGov(false)}
+            onClick={() => setShowModalEditGov(false)}
           >
             Fechar
           </button>
@@ -98,7 +98,7 @@ function Process() {
       </Modal>
       <ContainerGeral>
         <ContainerHeader
-          handeclick={(e) => openModal("", "create")}
+          handeclick={() => openModal("", "create")}
           title="Processos"
           refresh={refresh}
           exibeBtnAdd={false}
@@ -117,12 +117,18 @@ function Process() {
         />
         <ContainerBody>
           <ContainerTable>
-            <DataTable
-              coll={col}
-              ds={dataSet}
-              titulo="Licitações cadastradas"
-              conditionalRowStyles={conditionalRowStyles}
-            />
+            {dataSet.length > 0 ? (
+              <DataTable
+                coll={col}
+                ds={dataSet}
+                titulo="Licitações cadastradas"
+                conditionalRowStyles={conditionalRowStyles}
+              />
+            ) : (
+              <div className="flex justify-center items-center w-full h-full">
+                <FaDatabase className="text-9xl text-slate-400" />
+              </div>
+            )}
           </ContainerTable>
         </ContainerBody>
       </ContainerGeral>

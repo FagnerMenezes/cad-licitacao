@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { FaDatabase } from "react-icons/fa";
-import ToggleSwitch from "../layout/ToggleSwitch";
 import InputFloat from "../form/InputFloat";
+import ToggleSwitch from "../layout/ToggleSwitch";
 
 export function GovernmentData({ data, handleChange, handleChangeCheck }) {
   return (
@@ -52,3 +52,9 @@ export function GovernmentData({ data, handleChange, handleChangeCheck }) {
     </div>
   );
 }
+
+GovernmentData.propTypes = {
+  data: PropTypes.object,
+  handleChange: PropTypes.func,
+  handleChangeCheck: PropTypes.func,
+};

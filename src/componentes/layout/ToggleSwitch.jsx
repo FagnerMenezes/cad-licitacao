@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import "../styles/processo.css";
-
-const ToogleSwitch = ({ handleCLick, texto, value, name }) => {
+const ToggleSwitch = ({ handleCLick, texto, value, name }) => {
   return (
     <>
       <div className="flex">
@@ -17,13 +17,18 @@ const ToogleSwitch = ({ handleCLick, texto, value, name }) => {
               onChange={handleCLick}
               checked={value}
             />
-            <div class="knobs"></div>
-            <div class="layer"></div>
+            <div className="knobs"></div>
+            <div className="layer"></div>
           </div>
         </label>
       </div>
     </>
   );
 };
-
-export default ToogleSwitch;
+ToggleSwitch.propTypes = {
+  handleCLick: PropTypes.func,
+  texto: PropTypes.string,
+  value: PropTypes.string,
+  name: PropTypes.string,
+};
+export default ToggleSwitch;

@@ -1,9 +1,9 @@
+import { useCallback, useEffect, useState } from "react";
 import { FaAt, FaEdit, FaTrash } from "react-icons/fa";
+import Swal from "sweetalert2";
 import useFetch from "../../hooks/UseFetch";
 import { BtnLink, api } from "../../services";
-import { useCallback, useEffect, useState } from "react";
 import { STATUS_ICONS } from "./TableConfig";
-import Swal from "sweetalert2";
 
 const data = new Date();
 const data_inicial = Number(data.getMonth());
@@ -162,6 +162,7 @@ export const useProcess = () => {
     if (op === "create") {
       setTitleModal("Novo processo");
       setAction("create");
+      setEditProcesso({});
     } else {
       setAction("update");
       setTitleModal("Edição do processo");
@@ -170,7 +171,6 @@ export const useProcess = () => {
       });
       setEditProcesso(processo);
     }
-
     setShowModal(true);
   }
 

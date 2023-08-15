@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 const ContainerTable = (props) => {
   return (
     <>
@@ -5,5 +6,7 @@ const ContainerTable = (props) => {
     </>
   );
 };
-
+ContainerTable.propTypes = {
+  children: PropTypes.array,
+};
 export default ContainerTable;

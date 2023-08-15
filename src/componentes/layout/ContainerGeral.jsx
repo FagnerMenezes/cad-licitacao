@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 const ContainerGeral = (props) => {
   return (
     <>
@@ -7,5 +8,7 @@ const ContainerGeral = (props) => {
     </>
   );
 };
-
+ContainerGeral.propTypes = {
+  children: PropTypes.array,
+};
 export default ContainerGeral;

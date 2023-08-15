@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 const ContainerBody = (props) => {
   return (
     <>
@@ -5,5 +6,7 @@ const ContainerBody = (props) => {
     </>
   );
 };
-
+ContainerBody.propTypes = {
+  children: PropTypes.array,
+};
 export default ContainerBody;
