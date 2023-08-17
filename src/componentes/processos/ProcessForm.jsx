@@ -594,10 +594,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
               <div className="container">
                 <div className="row">
                   <span onClick={(e) => abrirModalEmpenho(e, 1)}>
-                    <button
-                      className="btn btn-outline-primary btn-sm"
-                      style={{ width: "100px" }}
-                    >
+                    <button className="border rounded-md flex justify-center items-center gap-2 outline-none bg-blue-600 hover:bg-blue-700 text-white p-2">
                       {<FaPlus />} Novo
                     </button>
                   </span>
@@ -633,7 +630,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                                       currency: "BRL",
                                     })}
                                   </td>
-                                  <td>{item.status_note.name}</td>
+                                  <td>{item.status_note}</td>
                                   <td>
                                     <a
                                       href={item.attachment}
@@ -891,7 +888,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
           <FaTimes onClick={() => setShowModalEmpenho(false)} />
         </Modal.Header>
         <Modal.Body>
-          <FormEmpenho handleSubmit={createUpdateEmpenho} data={empenho} />
+          <FormEmpenho handleSubmitForm={createUpdateEmpenho} data={empenho} />
         </Modal.Body>
         <ModalFooter>
           <button
