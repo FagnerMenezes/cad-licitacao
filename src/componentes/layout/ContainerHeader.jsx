@@ -1,4 +1,4 @@
-import { FaPlus, FaListUl, FaSpinner, FaPlusCircle } from "react-icons/fa";
+import { FaListUl, FaPlus, FaPlusCircle, FaSpinner } from "react-icons/fa";
 import styled from "styled-components";
 import BtnLink from "./BtnLink";
 
@@ -50,8 +50,8 @@ const ContainerHeader = ({
   return (
     <>
       <div className="container">
-        <div className="row">
-          <div className="col-4">
+        <div className="flex justify-around w-full border-b-2">
+          <div className="flex w-full">
             <GroupBtn>
               <BtnLink
                 title="Adicionar novo"
@@ -89,8 +89,10 @@ const ContainerHeader = ({
               </Button>
             </GroupBtn>
           </div>
-          <div className="col-8">
-            <Title>{title}</Title>
+          <div className="flex w-full">
+            <h1 className="text-slate-800 text-3xl font-bold font-serif">
+              {title}
+            </h1>
           </div>
         </div>
       </div>

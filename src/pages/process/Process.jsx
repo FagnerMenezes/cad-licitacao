@@ -99,7 +99,7 @@ function Process() {
       <ContainerGeral>
         <ContainerHeader
           handeclick={() => openModal("", "create")}
-          title="Processos"
+          title="Licitações Cadastradas"
           refresh={refresh}
           exibeBtnAdd={false}
           exibeBtnList={false}
@@ -121,7 +121,7 @@ function Process() {
               <DataTable
                 coll={col}
                 ds={dataSet}
-                titulo="Licitações cadastradas"
+                titulo=""
                 conditionalRowStyles={conditionalRowStyles}
               />
             ) : (

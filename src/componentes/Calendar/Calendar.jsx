@@ -1,27 +1,10 @@
-import { React, useCallback, useEffect, useState } from "react";
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import FullCalendar from "@fullcalendar/react"; // must go before plugins
+import { useCallback, useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 //import axios from "axios";
-import styled from "styled-components";
 import { Modal, ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
 import api from "../../services/api";
-
-const ContainerCalendar = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  margin-top: 10px;
-  padding: 15px;
-  background-color: white;
-  width: 100%;
-  height: 100%;
-  #calendar {
-    width: 80%;
-  }
-`;
 
 var data = new Date();
 const datas = {
@@ -29,7 +12,7 @@ const datas = {
   end: new Date(data.getFullYear(), 11, 31).toISOString().split("T")[0],
 };
 const Calendar = () => {
-  const [eventos, setEventos] = useState([]);
+  const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [processo, setProcesso] = useState([]);
   const [process, setProcess] = useState({});
@@ -41,18 +24,13 @@ const Calendar = () => {
     setProcesso(response.data.process);
     return response;
   }, []);
-  const fetchAndSetEventos = async () => {
+  const fetchAndSetEvents = async () => {
     const result = await dataSet(); // Assuming dataSet is a function that returns a Promise
     const dataSet_ = result.data.process.map((item) => {
       const { portal, modality, bidding_notice, date_finish, status } =
         item.process_data;
 
-      const backgroundColor =
-        status === "Proposta enviada"
-          ? "green"
-          : status === "Cancelado"
-          ? "orange"
-          : "red";
+      const backgroundColor = status !== "Cadastrar proposta" ? "green" : "red";
 
       return {
         id: item._id,
@@ -64,12 +42,11 @@ const Calendar = () => {
         borderColor: "white",
       };
     });
-
-    setEventos(dataSet_);
+    setEvents(dataSet_);
   };
 
   useEffect(() => {
-    fetchAndSetEventos();
+    fetchAndSetEvents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -94,36 +71,38 @@ const Calendar = () => {
 
   return (
     <>
-      <ContainerCalendar>
-        <div id="calendar">
-          <FullCalendar
-            initialDate={
-              new Date(data.getFullYear(), new Date().getMonth(), 1)
-                .toISOString()
-                .split("T")[0]
-            }
-            plugins={[dayGridPlugin]}
-            initialView="dayGridMonth"
-            locale="pt-br"
-            events={eventos}
-            eventClick={(e) => openModalProcess(e.event.id)}
-            themeSystem="bootstrap5"
-            timeZone="America/Sao_Paulo"
-            display="background"
-            navLinks="true" // can click day/week names to navigate views
-            businessHours="true" // display business hours
-            editable="true"
-            selectable="true"
-            monthMode="true"
-            eventColor="blue"
-            headerToolbar={{
-              left: "prev,next",
-              center: "title",
-              right: "today,dayGridWeek,dayGridMonth",
-            }}
-          />
-        </div>
-      </ContainerCalendar>
+      <div
+        id="calendar"
+        className="w-full h-full flex flex-col overflow-x-auto"
+      >
+        <FullCalendar
+          initialDate={
+            new Date(data.getFullYear(), new Date().getMonth(), 1)
+              .toISOString()
+              .split("T")[0]
+          }
+          plugins={[dayGridPlugin]}
+          initialView="dayGridMonth"
+          locale="pt-br"
+          events={events}
+          eventClick={(e) => openModalProcess(e.event.id)}
+          themeSystem="standard"
+          timeZone="America/Sao_Paulo"
+          display="background"
+          navLinks="true" // can click day/week names to navigate views
+          businessHours="true" // display business hours
+          editable="true"
+          selectable="true"
+          monthMode="true"
+          eventColor="blue"
+          headerToolbar={{
+            right: "prev,next",
+            center: "title",
+            left: "dayGridWeek,dayGridMonth,dayGridYear",
+          }}
+        />
+      </div>
+
       <Modal
         show={showModal}
         cancel={showModal}
@@ -133,7 +112,7 @@ const Calendar = () => {
       >
         <ModalHeader>
           <ModalTitle>DADOS DO PROCESSO</ModalTitle>
-          <FaTimes onClick={(e) => setShowModal(false)} />
+          <FaTimes onClick={() => setShowModal(false)} />
         </ModalHeader>
         <ModalBody>
           <div className="container">
@@ -164,6 +143,10 @@ const Calendar = () => {
                 <strong>MODALIDADE:</strong>{" "}
               </div>
               <div className="col-sm-8">{process.modality}</div>
+              <div className="col-sm-4">
+                <strong>STATUS:</strong>{" "}
+              </div>
+              <div className="col-sm-8">{process.status}</div>
             </div>
           </div>
         </ModalBody>
