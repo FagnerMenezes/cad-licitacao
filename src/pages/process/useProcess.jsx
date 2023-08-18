@@ -255,8 +255,6 @@ export const useProcess = () => {
 
   const refresh = (e) => {
     e.preventDefault();
-    // setDateInit(datas.begin);
-    // setDateFim(datas.end);
     if (reload) {
       setReload(false);
     } else {
