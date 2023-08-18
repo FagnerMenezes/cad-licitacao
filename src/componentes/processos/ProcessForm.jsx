@@ -882,7 +882,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
       {/**MODAL EMPENHO */}
       <Modal show={showModalEmpenho} size="sm">
         <Modal.Header style={{ backgroundColor: "#0d6efd", color: "white" }}>
-          <Modal.Title style={{ textTransform: "uppercase", fontSize: "16px" }}>
+          <Modal.Title style={{ textTransform: "uppercase", fontSize: "20px" }}>
             {titleEmpenho}
           </Modal.Title>
           <FaTimes onClick={() => setShowModalEmpenho(false)} />
