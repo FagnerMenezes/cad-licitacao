@@ -223,7 +223,7 @@ export function GovernmentForm({ handleSubmit, orgData, btnText }) {
       >
         <Modal.Header style={{ backgroundColor: "#0d6efd", color: "white" }}>
           <Modal.Title id="contained-modal-title-vcenter">
-            <span className="uppercase">Cadastrar endereço</span>
+            <span className="uppercase text-sm">Cadastrar endereço</span>
           </Modal.Title>
           <FaTimes onClick={(e) => setShowModal(false)} />
         </Modal.Header>
@@ -253,7 +253,7 @@ export function GovernmentForm({ handleSubmit, orgData, btnText }) {
       >
         <Modal.Header style={{ backgroundColor: "#0d6efd", color: "white" }}>
           <Modal.Title id="contained-modal-title-vcenter">
-            <span className="uppercase">Editar endereço</span>
+            <span className="uppercase text-sm">Editar endereço</span>
           </Modal.Title>
           <FaTimes onClick={(e) => setShowModalEditEnd(false)} />
         </Modal.Header>
@@ -283,7 +283,7 @@ export function GovernmentForm({ handleSubmit, orgData, btnText }) {
       >
         <Modal.Header style={{ backgroundColor: "#0d6efd", color: "white" }}>
           <Modal.Title id="contained-modal-title-vcenter">
-            <span className="uppercase">Cadastrar contato</span>
+            <span className="uppercase text-sm">Cadastrar contato</span>
           </Modal.Title>
           <FaTimes onClick={(e) => setShowModalContato(false)} />
         </Modal.Header>
@@ -313,7 +313,7 @@ export function GovernmentForm({ handleSubmit, orgData, btnText }) {
       >
         <Modal.Header style={{ backgroundColor: "#0d6efd", color: "white" }}>
           <Modal.Title id="contained-modal-title-vcenter">
-            <span className="uppercase"> Editar contato</span>
+            <span className="uppercase text-sm"> Editar contato</span>
           </Modal.Title>
           <FaTimes onClick={(e) => setShowModalContatoEdit(false)} />
         </Modal.Header>

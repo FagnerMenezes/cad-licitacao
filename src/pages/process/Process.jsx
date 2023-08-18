@@ -6,7 +6,6 @@ import {
   ModalTitle,
 } from "react-bootstrap";
 import { FaDatabase, FaTimes } from "react-icons/fa";
-import GovernmentForm from "../../componentes/goverment/GovernmentForm";
 import {
   ContainerBody,
   ContainerGeral,
@@ -32,8 +31,6 @@ function Process() {
     refresh,
     setShowModal,
     action,
-    showModalEditGov,
-    setShowModalEditGov,
     dateFim,
     dateInicio,
     openSpinner,
@@ -67,34 +64,6 @@ function Process() {
             Fechar
           </button>
         </ModalFooter>
-      </Modal>
-      <Modal
-        show={showModalEditGov}
-        cancel={showModalEditGov}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header style={{ backgroundColor: "#0d6efd", color: "white" }}>
-          <Modal.Title
-            id="contained-modal-title-vcenter"
-            style={{ textTransform: "uppercase" }}
-          >
-            Editar órgão público
-          </Modal.Title>
-          <FaTimes onClick={() => setShowModalEditGov(false)} />
-        </Modal.Header>
-        <Modal.Body>
-          <GovernmentForm></GovernmentForm>
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            className="btn btn-danger"
-            onClick={() => setShowModalEditGov(false)}
-          >
-            Fechar
-          </button>
-        </Modal.Footer>
       </Modal>
       <ContainerGeral>
         <ContainerHeader
