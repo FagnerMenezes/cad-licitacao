@@ -17,11 +17,11 @@ function App() {
       {/**CONTAINER GERAL */}
       <div className="grid grid-cols-1 sm:grid-cols-12">
         {/**MENU LATERAL */}
-        <div className="col-end-1 row-span-2 sm:visible ">
+        <div className="col-end-1 row-span-2">
           <SideMenu />
         </div>
         {/**HEADER */}
-        <div className="col-span-12">
+        <div className="col-span-12 ">
           <Headers />
         </div>
 
@@ -32,7 +32,7 @@ function App() {
         bg-slate-100
         border-l-2
         border-t-2 
-        rounded-ss-xl p-4 min-h-[100vh] sm:ml-0 ml-1"
+        rounded-ss-xl p-4 min-h-[90vh] sm:ml-0 ml-1"
         >
           <Outlet />
         </div>

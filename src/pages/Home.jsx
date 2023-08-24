@@ -1,12 +1,6 @@
-import React from "react";
 import { useEffect, useState } from "react";
+import { FaChartBar, FaHotel, FaMoneyCheckAlt } from "react-icons/fa";
 import api from "../services/api";
-import {
-  FaCalculator,
-  FaChartBar,
-  FaHotel,
-  FaMoneyCheckAlt,
-} from "react-icons/fa";
 
 const data = new Date();
 const diaFinal = data.getMonth() === 1 ? 28 : 31;
@@ -35,7 +29,7 @@ function Home() {
   return (
     <>
       <div className="flex flex-col">
-        <section className="grid grid-cols-4 gap-3 justify-center items-center">
+        <section className="sm:grid sm:grid-cols-3 gap-3 justify-center items-center flex-col">
           <div className="flex flex-col gap-2 justify-center items-center border rounded-xl bg-blue-500 p-2">
             <FaChartBar className="w-12 h-12 text-white bg-blue-500" />
             <p className="text-white font-serif ">Processos Cadastrados</p>

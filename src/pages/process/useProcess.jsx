@@ -138,7 +138,8 @@ export const useProcess = () => {
 
   useEffect(() => {
     getDataGovernment();
-  }, [reload, getDataGovernment]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function closeModal(e) {
     e.preventDefault();

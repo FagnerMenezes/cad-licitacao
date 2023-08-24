@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Modal, ModalBody, ModalFooter, Tab, Tabs } from "react-bootstrap";
 import {
   FaCloudDownloadAlt,
@@ -53,10 +53,11 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
   const [actionEmpenho, setActionEmpenho] = useState(0);
   const [actionItem, setActionItem] = useState(0);
 
-  useEffect(() => {
+  useMemo(() => {
     getDataGovernment();
-  }, [refresh]);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  //console.log("redenrizou");
   function getEditOrgao(codigo) {
     if (!codigo) {
       return;
@@ -350,23 +351,35 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
     }
   };
 
+  const nameGovernment = processo.government
+    .filter((data) => data.manager === "true")
+    .map((item) => {
+      return item.name;
+    });
+
   return (
-    <div
-      className="container rounded"
-      style={{ backgroundColor: "white", padding: "10px" }}
-    >
+    <div className="flex flex-col rounded-md bg-white p-4 border">
+      {processo.government.length > 0 ? (
+        <div className="flex w-full  p-2  mb-2 border-b-[1px]">
+          <span className="text-lg text-blue-800 uppercase font-bold">
+            {nameGovernment}
+          </span>
+        </div>
+      ) : (
+        ""
+      )}
       <form onSubmit={submit}>
-        <div className="container rounded">
+        <div className="flex flex-col p-2 gap-1 ">
           <Tabs
             defaultActiveKey="home"
             id="justify-tab-example"
             className="mb-3"
+            fill
           >
-            <Tab eventKey="home" title="Unidade gerenciadora">
-              <br />
-              <div className="row">
-                <div className="col-md-12 ">
-                  <label className="font-bold text-sm uppercase">
+            <Tab eventKey="home" title="Unidade gerenciadora" className="p-1">
+              <div className="flex flex-col">
+                <div className="flex flex-col">
+                  <label className="font-bold text-sm uppercase ">
                     Unidade gerenciadora
                   </label>
                   <div className="input-group mb-3">
@@ -429,7 +442,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
                     </span>
                   </div>
                 </div>
-                <div className={`col-md-4`}>
+                <div className={`flex flex-col`}>
                   <label className="form-control-label uppercase font-bold text-sm">
                     Nº da UASG/COD/UGE
                   </label>
@@ -776,8 +789,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
               </table>
             </Tab>
           </Tabs>
-          <br />
-          <div className="border-b-2 w-full "></div>
+          <div className="border-b-[1px] w-full mt-3 "></div>
           <div className="flex w-full mt-2">
             <SubmitButton text={btnText} />
           </div>

@@ -1,13 +1,5 @@
-
-
-function Main(props){
-
-    return(
-        <div >               
-               {props.children}
-        </div>
-    )
-
+function Main(props) {
+  return <>{props.children}</>;
 }
 
-export default Main
+export default Main;

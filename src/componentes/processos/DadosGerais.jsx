@@ -1,15 +1,11 @@
-import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { useMemo, useState } from "react";
 import { Modal, ModalFooter } from "react-bootstrap";
-import { FaTimes } from "react-icons/fa";
+import { FaPlus, FaTimes } from "react-icons/fa";
 import api from "../../services/api";
 import FormConfig from "../form/FormConfig";
-import Input from "../form/Input";
-import InputFloat from "../form/InputFloat";
-import Select from "../form/Select";
 
 const DadosGerais = ({ getDados, data }) => {
-  // console.log(data);
-  // const [processo, setProcesso] = useState(data || {});
   const [processData, setProcessData] = useState(data || {});
   const [modalidades, setModalidades] = useState([]);
   const [portais, setPortais] = useState([]);
@@ -20,7 +16,7 @@ const DadosGerais = ({ getDados, data }) => {
   const [refresh, setRefresh] = useState(false);
   const [collection, setCollection] = useState();
 
-  useEffect(() => {
+  useMemo(() => {
     api.get("modalidades").then((response) => {
       setModalidades(response.data);
     });
@@ -118,168 +114,236 @@ const DadosGerais = ({ getDados, data }) => {
     setCollection(mongoCollection);
     setModalConfig(true);
     settitleModalConfig(title);
-    setRefresh(false);
+    //setRefresh(false);
   }
 
   function fecharModalConfig() {
     setModalConfig(false);
-    setRefresh(true);
+    setRefresh(!refresh);
   }
-
   return (
-    <div className="col-md-12">
-      <br />
-      <div className="row g-1">
-        <div className={`col-md-4`}>
-          <InputFloat
-            type="text"
-            text="Nº do processo"
-            name="n_process"
-            placeholder="Informe o nº do processo"
-            handleOnChange={handleOnChange}
-            required="required"
-            value={
-              processData.process_data ? processData.process_data.n_process : ""
-            }
-          />
-        </div>
-        <div className={`col-md-4`}>
-          <InputFloat
-            type="text"
-            text="Nº do edital"
-            name="bidding_notice"
-            placeholder="Informe o nº do edital"
-            handleOnChange={handleOnChange}
-            required="required"
-            value={
-              processData.process_data
-                ? processData.process_data.bidding_notice
-                : ""
-            }
-          />
-        </div>
-
-        <div className="col-md-4">
-          <Input
-            type="date"
-            text="Data inicial"
-            name="date_init"
-            handleOnChange={handleOnChange}
-            value={
-              processData != null && processData.process_data?.date_init
-                ? new Date(processData.process_data.date_init)
-                    .toISOString()
-                    .split("T")[0]
-                : ""
-            }
-            required={true}
-          />
-        </div>
-        <div className={`col-md-4`}>
-          <Input
-            type="date"
-            text="Data disputa"
-            name="date_finish"
-            handleOnChange={handleOnChange}
-            value={
-              processData != null && processData.process_data.date_finish
-                ? new Date(processData.process_data.date_finish)
-                    .toISOString()
-                    .split("T")[0]
-                : ""
-            }
-            required={true}
-          />
-        </div>
-        <div className={`col-md-4`}>
-          <Input
-            type="time"
-            text="Hórario da disputa"
-            name="hours_finish"
-            handleOnChange={handleOnChange}
-            value={
-              processData.process_data.hours_finish
-                ? processData.process_data.hours_finish
-                : "00:00"
-            }
-          />
-        </div>
-        <div className={`col-md-8`}>
-          <Input
-            type="text"
-            text="Objeto"
-            name="object"
-            placeholder="Informe o objeto"
-            handleOnChange={handleOnChange}
-            value={
-              processData.process_data ? processData.process_data.object : ""
-            }
-          />
-        </div>
-        <div className={`col-md-4`}>
-          <Select
-            text="Modalidade"
-            name="modality"
-            options={modalidades}
-            handleOnChange={handleModalidade}
-            value={
-              processData.process_data !== ""
-                ? processData.process_data.modality
-                : ""
-            }
-            buttonClick={(e) =>
-              abrirModalConfig(e, "modalidades", "Modalidades")
-            }
-            exibeBtn={true}
-          />
-        </div>
-        <div className={`col-md-4`}>
-          <Select
-            text="Portal"
-            name="portal"
-            options={portais}
-            handleOnChange={handlePortal}
-            value={
-              processData.process_data ? processData.process_data.portal : ""
-            }
-            buttonClick={(e) => abrirModalConfig(e, "portais", "Portais")}
-            exibeBtn={true}
-          />
-        </div>
-        <div className={`col-md-4`}>
-          <Select
-            text="Tipo de disputa"
-            name="type_dispute"
-            options={tipoDisputas}
-            handleOnChange={handleTypeDisputa}
-            value={
-              processData.process_data
-                ? processData.process_data.type_dispute
-                : ""
-            }
-            buttonClick={(e) =>
-              abrirModalConfig(e, "tipo_disputas", "Tipo Disputa")
-            }
-            exibeBtn={true}
-          />
-        </div>
-        <div className="col-md-4">
-          <Select
-            text="Status"
-            name="status"
-            options={statusProc}
-            handleOnChange={handleStatus}
-            value={
-              processData.process_data.status
-                ? processData.process_data.status
-                : ""
-            }
-            buttonClick={(e) => abrirModalConfig(e, "status", "Status")}
-            exibeBtn={true}
-          />
-        </div>
+    <div className="grid sm:grid-cols-3 gap-1 grid-cols-1">
+      <div className="border rounded-md flex items-center gap-1 h-8">
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-8 p-1 flex items-center sm:min-w-[100px]">
+          Nº processo
+        </span>
+        <input
+          className="outline-none w-full "
+          type="text"
+          name="n_process"
+          placeholder="Informe o nº do processo"
+          onChange={handleOnChange}
+          required="required"
+          value={
+            processData.process_data ? processData.process_data.n_process : ""
+          }
+        />
       </div>
-
+      <div className="border rounded-md flex items-center gap-1 h-8">
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-8 p-1 flex items-center sm:min-w-[100px]">
+          Edital
+        </span>
+        <input
+          className="w-full outline-none text-blue-700 font-bold"
+          type="text"
+          name="bidding_notice"
+          placeholder="Informe o nº do edital"
+          onChange={handleOnChange}
+          required="required"
+          value={
+            processData.process_data
+              ? processData.process_data.bidding_notice
+              : ""
+          }
+        />
+      </div>
+      <div className="border rounded-md flex items-center gap-1 h-8">
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-8 p-1 flex items-center sm:min-w-[100px]">
+          Data inicial
+        </span>
+        <input
+          className="w-full outline-none"
+          type="date"
+          name="date_init"
+          onChange={handleOnChange}
+          value={
+            processData != null && processData.process_data?.date_init
+              ? new Date(processData.process_data.date_init)
+                  .toISOString()
+                  .split("T")[0]
+              : ""
+          }
+          required={true}
+        />
+      </div>
+      <div className="border rounded-md flex items-center gap-1 h-8">
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-8 p-1 flex items-center sm:min-w-[100px]">
+          Data final
+        </span>
+        <input
+          className="w-full outline-none"
+          type="date"
+          name="date_finish"
+          onChange={handleOnChange}
+          value={
+            processData != null && processData.process_data.date_finish
+              ? new Date(processData.process_data.date_finish)
+                  .toISOString()
+                  .split("T")[0]
+              : ""
+          }
+          required={true}
+        />
+      </div>
+      <div className="border rounded-md flex items-center gap-1 h-8">
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-8 p-1 flex items-center sm:min-w-[100px]">
+          Hs disputa
+        </span>
+        <input
+          className="w-full outline-none"
+          type="time"
+          name="hours_finish"
+          onChange={handleOnChange}
+          value={
+            processData.process_data.hours_finish
+              ? processData.process_data.hours_finish
+              : "00:00"
+          }
+        />
+      </div>
+      <div className="border rounded-md flex items-center gap-1 h-8">
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-8 p-1 flex items-center sm:min-w-[100px]">
+          objeto
+        </span>
+        <input
+          className="w-full outline-none"
+          type="text"
+          name="object"
+          placeholder="Informe o objeto"
+          onChange={handleOnChange}
+          value={
+            processData.process_data ? processData.process_data.object : ""
+          }
+        />
+      </div>
+      <div className={`border rounded-md flex items-center gap-1 h-10 mt-1`}>
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-10 p-1 flex items-center sm:min-w-[100px]">
+          Modalidade
+        </span>
+        <select
+          className="outline-none w-full appearance-none "
+          onChange={handleModalidade}
+          value={
+            processData.process_data ? processData.process_data.modality : ""
+          }
+        >
+          <option value="0" key="0">
+            Selecione uma opção
+          </option>
+          {modalidades.map((item) => (
+            <option key={item.id}>{item.name}</option>
+          ))}
+        </select>
+        <button
+          className="bg-blue-600 text-white h-10 p-1 rounded-tr-md rounded-br-md hover:bg-sky-500"
+          onClick={(e) => abrirModalConfig(e, "modalidades", "Modalidades")}
+        >
+          <FaPlus />
+        </button>
+      </div>
+      <div className={`border rounded-md flex items-center gap-1 h-10 mt-1`}>
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-10 p-1 flex items-center sm:min-w-[100px]">
+          portal
+        </span>
+        <select
+          className="outline-none w-full appearance-none "
+          name="portal"
+          onChange={handlePortal}
+          value={
+            processData.process_data ? processData.process_data.portal : ""
+          }
+        >
+          <option value="0" key="0">
+            Selecione uma opção
+          </option>
+          {portais.map((item) => (
+            <option key={item.id}>{item.name}</option>
+          ))}
+        </select>
+        <button
+          className="bg-blue-600 text-white h-10 p-1 rounded-tr-md rounded-br-md hover:bg-sky-500"
+          onClick={(e) => abrirModalConfig(e, "portais", "Portais")}
+        >
+          <FaPlus />
+        </button>
+      </div>
+      <div className={`border rounded-md flex items-center gap-1 h-10 mt-1`}>
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-10 p-1 flex items-center sm:min-w-[100px]">
+          tipo disputa
+        </span>
+        <select
+          className="outline-none w-full appearance-none "
+          name="type_dispute"
+          onChange={handleTypeDisputa}
+          value={
+            processData.process_data
+              ? processData.process_data.type_dispute
+              : ""
+          }
+        >
+          <option value="0" key="0">
+            Selecione uma opção
+          </option>
+          {tipoDisputas.map((item) => (
+            <option key={item.id}>{item.name}</option>
+          ))}
+        </select>
+        <button
+          className="bg-blue-600 text-white h-10 p-1 rounded-tr-md rounded-br-md hover:bg-sky-500"
+          onClick={(e) => abrirModalConfig(e, "tipo_disputas", "Tipo Disputa")}
+        >
+          <FaPlus />
+        </button>
+      </div>
+      <div className={`border rounded-md flex items-center gap-1 h-10 mt-1`}>
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-10 p-1 flex items-center sm:min-w-[100px]">
+          status
+        </span>
+        <select
+          className="outline-none w-full appearance-none "
+          name="status"
+          onChange={handleStatus}
+          value={
+            processData.process_data.status
+              ? processData.process_data.status
+              : ""
+          }
+        >
+          <option value="0" key="0">
+            Selecione uma opção
+          </option>
+          {statusProc.map((item) => (
+            <option key={item.id}>{item.name}</option>
+          ))}
+        </select>
+        <button
+          className="bg-blue-600 text-white h-10 p-1 rounded-tr-md rounded-br-md hover:bg-sky-500"
+          onClick={(e) => abrirModalConfig(e, "status", "Status")}
+        >
+          <FaPlus />
+        </button>
+      </div>
+      <div className="border rounded-md flex items-center gap-1 h-10 mt-1">
+        <span className="uppercase text-sm bg-blue-600 text-white rounded-tl-md rounded-bl-md h-10 p-1 flex items-center sm:min-w-[100px] ">
+          UASG
+        </span>
+        <input
+          className="outline-none w-full text-blue-700 font-bold"
+          readOnly
+          type="text"
+          value={processData.government[0]?.code_government}
+        />
+      </div>
       {/**MODAL CONFIGURAÇÕES */}
       <Modal
         show={modalConfig}
@@ -306,6 +370,10 @@ const DadosGerais = ({ getDados, data }) => {
       </Modal>
     </div>
   );
+};
+DadosGerais.propTypes = {
+  getDados: PropTypes.func,
+  data: PropTypes.array,
 };
 
 export default DadosGerais;

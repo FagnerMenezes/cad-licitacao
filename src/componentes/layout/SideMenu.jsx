@@ -1,8 +1,8 @@
-import { React, useState } from "react";
-import { Link } from "react-router-dom";
-import { FaHome, FaGavel, FaRegMoneyBillAlt, FaCalendar } from "react-icons/fa";
-import { RiGovernmentFill } from "react-icons/ri";
+import { useState } from "react";
+import { FaCalendar, FaGavel, FaHome, FaRegMoneyBillAlt } from "react-icons/fa";
 import { GiBangingGavel } from "react-icons/gi";
+import { RiGovernmentFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 function SideMenu() {
   const [active, setActive] = useState(0);
@@ -12,22 +12,22 @@ function SideMenu() {
   }
 
   return (
-    <div className="flex sm:flex-col justify-center">
-      <div className="flex justify-center items-center mb-5 p-3">
+    <div className="flex sm:flex-col justify-center ">
+      <div className="flex justify-center items-center sm:mb-5 sm:p-3 p-1">
         <GiBangingGavel className="text-5xl text-blue-600 font-bold " />
       </div>
       <nav className="flex justify-center">
-        <div className="group flex sm:flex-col justify-center list-none gap-3">
+        <ul className="group flex sm:flex-col gap-2 justify-center list-none sm:gap-3 ">
           <li
             onClick={() => activeButton(1)}
             className={`${
               active === 1 ? "bg-blue-100  border-r-4 border-r-blue-300" : ""
             } 
             text-2xl 
-            flex 
+            flex        
             justify-center 
             items-center 
-            sm:w-20 p-1 hover:bg-blue-100 border-s
+             p-1 hover:bg-blue-100 border-s
             before:content-[''] `}
           >
             <Link to="/" data-toogle="tooltip" title="Home" className={` `}>
@@ -118,7 +118,7 @@ function SideMenu() {
               />
             </Link>
           </li>
-        </div>
+        </ul>
       </nav>
     </div>
   );

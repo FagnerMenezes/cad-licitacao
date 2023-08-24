@@ -2,8 +2,8 @@ import { useState } from "react";
 import useFetch from "../../hooks/UseFetch";
 
 export const UseProcessForm = () => {
-  const [org, setOrg] = useState([] || null);
-
+  const [org, setOrg] = useState(null);
+  // console.log("redenrizou");
   async function getDataGovernment() {
     try {
       const response = await useFetch.get("processos?", {
@@ -29,7 +29,7 @@ export const UseProcessForm = () => {
       console.error(error);
     }
   }
-
+  //console.log(org);
   return {
     getDataGovernment,
     org,

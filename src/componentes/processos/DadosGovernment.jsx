@@ -1,13 +1,17 @@
-import { FaRegBuilding, FaSearch, FaTimes } from "react-icons/fa";
-import styles from "./ProcessoForm.module.css";
-import { FaEye, FaPlus } from "react-icons/fa";
-import InputFloat from "../form/InputFloat";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
-import ListSearch from "../layout/ListSearch";
-import { FormOrgao } from "../../services";
+import {
+  FaEye,
+  FaPlus,
+  FaRegBuilding,
+  FaSearch,
+  FaTimes,
+} from "react-icons/fa";
 import uuid from "react-uuid";
-import useFetch from "../../hooks/UseFetch";
+import { FormOrgao } from "../../services";
+import InputFloat from "../form/InputFloat";
+import ListSearch from "../layout/ListSearch";
+import styles from "./ProcessoForm.module.css";
 
 const DadosGovernment = (process, getDadosGovernment) => {
   const [showModalAddGov, setShowModalAddGov] = useState(false);
@@ -15,37 +19,38 @@ const DadosGovernment = (process, getDadosGovernment) => {
   const [orgEdit, setOrgEdit] = useState([] || null);
   const [showModal, setShowModal] = useState(false);
   const [processo, setProcesso] = useState(process.data || {});
-  const [org, setOrg] = useState([] || null);
 
-  async function getDataGovernment() {
-    try {
-      const response = await useFetch.get("processos?", {
-        start: "1990-01-01",
-        end: "2050-12-31",
-        skip: 0,
-        limit: 1000,
-      });
+  //const [org, setOrg] = useState([] || null);
+  // console.log(getDadosGovernment);
+  // async function getDataGovernment() {
+  //   try {
+  //     const response = await useFetch.get("processos?", {
+  //       start: "1990-01-01",
+  //       end: "2050-12-31",
+  //       skip: 0,
+  //       limit: 1000,
+  //     });
+  //     console.log(response);
+  //     const dataset = response.data.process
+  //       .flatMap((item) => item.government)
+  //       .filter((item) => item !== null);
+  //     const newGovernment = new Set();
+  //     const filterGovernment = dataset.filter((government) => {
+  //       const duplicatedPerson = newGovernment.has(government.cnpj);
 
-      const dataset = response.data.process
-        .flatMap((item) => item.government)
-        .filter((item) => item !== null);
-      const newGovernment = new Set();
-      const filterGovernment = dataset.filter((government) => {
-        const duplicatedPerson = newGovernment.has(government.cnpj);
+  //       newGovernment.add(government.cnpj);
+  //       return !duplicatedPerson;
+  //     });
+  //     // console.log(filterGovernment);
+  //     setOrg(filterGovernment);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
-        newGovernment.add(government.cnpj);
-        return !duplicatedPerson;
-      });
-
-      setOrg(filterGovernment);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    getDataGovernment();
-  }, []);
+  // useEffect(() => {
+  //   getDataGovernment();
+  // }, []);
 
   function getEditOrgao(codigo) {
     if (!codigo) {
@@ -118,7 +123,7 @@ const DadosGovernment = (process, getDadosGovernment) => {
 
     setShowModalAddGov(false);
   };
-
+  // console.log(org);
   return (
     <>
       {/**UNIDADE GERENCIADORA */}
@@ -136,9 +141,8 @@ const DadosGovernment = (process, getDadosGovernment) => {
             <div className="col-md-12 ">
               <div className={`input-group ${styles.container_process_uasg}`}>
                 <input
-                  className="form-control "
+                  className="outline-none border rounded-md w-full "
                   type="text"
-                  text="Unidade Gerenciadora "
                   name="name"
                   placeholder="Informe o nome do órgão"
                   value={
@@ -156,7 +160,7 @@ const DadosGovernment = (process, getDadosGovernment) => {
                     title="visualizar unidade gerenciadora"
                   >
                     <FaEye
-                      onClick={(e) =>
+                      onClick={() =>
                         getEditOrgao(
                           processo.government.length > 0
                             ? processo.government[0]._id
@@ -173,14 +177,14 @@ const DadosGovernment = (process, getDadosGovernment) => {
                   data-toogle="tooltip"
                   title="Localizar unidade gerenciadora"
                 >
-                  <FaSearch onClick={(e) => setShowModal(true)} />
+                  <FaSearch onClick={() => setShowModal(true)} />
                 </span>
                 <span
                   className="input-group-text"
                   data-toogle="tooltip"
                   title="Cadastrar unidade gerenciadora"
                 >
-                  <FaPlus onClick={(e) => setShowModalAddGov(true)} />
+                  <FaPlus onClick={() => setShowModalAddGov(true)} />
                 </span>
               </div>
             </div>
@@ -251,7 +255,7 @@ const DadosGovernment = (process, getDadosGovernment) => {
         </Modal.Header>
         <Modal.Body>
           <ListSearch
-            list={org}
+            list={{}}
             handleDoubleClick={localizarOrgao}
             fildset="name"
           />

@@ -14,9 +14,11 @@ const ContainerPesquisa = ({
         className="
             group
             flex 
+            justify-between
             gap-2
             items-center
-            sm:w-96
+            w-full
+            sm:w-[500px]
             border 
             rounded-lg 
             h-9 
@@ -27,7 +29,7 @@ const ContainerPesquisa = ({
             hover:ring-1 ring-blue-500"
       >
         <input
-          className="w-96 outline-none"
+          className="w-full outline-none"
           type="search"
           placeholder="Localizar"
           onKeyDown={handleChangeLocalizar}

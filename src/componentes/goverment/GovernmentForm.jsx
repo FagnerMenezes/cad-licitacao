@@ -148,9 +148,10 @@ export function GovernmentForm({ handleSubmit, orgData, btnText }) {
       setStatus({});
       return true;
     } catch (err) {
+      //console.log(err.errors[0]);
       setStatus({
         type: "erro",
-        msg: err.errors,
+        msg: err.errors[0],
       });
 
       return false;
@@ -168,7 +169,7 @@ export function GovernmentForm({ handleSubmit, orgData, btnText }) {
   }
   function handleChangeCheck(e) {
     const dados = {
-      [e.target.name]: String(e.target.checked),
+      manager: e.target.checked,
     };
     setOrgaos({
       ...orgaos,
@@ -202,7 +203,7 @@ export function GovernmentForm({ handleSubmit, orgData, btnText }) {
           deleteAddress={excluirEndereco}
         />
       </form>
-      <br />
+
       <div className="flex">
         <button
           onClick={submit}
