@@ -354,7 +354,7 @@ const DadosGerais = ({ getDados, data }) => {
       >
         <Modal.Header style={{ backgroundColor: "#0d6efd", color: "white" }}>
           <Modal.Title>{titleModalConfig}</Modal.Title>
-          <FaTimes onClick={(e) => fecharModalConfig()} />
+          <FaTimes onClick={() => fecharModalConfig()} />
         </Modal.Header>
         <Modal.Body>
           <FormConfig collection={collection} />
@@ -362,7 +362,7 @@ const DadosGerais = ({ getDados, data }) => {
         <ModalFooter>
           <button
             className="btn btn-danger"
-            onClick={(e) => fecharModalConfig()}
+            onClick={() => fecharModalConfig()}
           >
             Fechar
           </button>
