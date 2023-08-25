@@ -94,4 +94,3 @@ GovernmentData.propTypes = {
   handleChange: PropTypes.func,
   handleChangeCheck: PropTypes.func,
 };
-//TODO CARREGAR A LISTA DOS ÓRGÃOS NO FILTRO
