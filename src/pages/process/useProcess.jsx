@@ -100,7 +100,7 @@ export const useProcess = () => {
           ),
           status: status(statusName),
           e: (
-            <span onClick={(e) => deleteProcess(item._id)}>
+            <span onClick={() => deleteProcess(item._id)}>
               <BtnLink
                 icon={<FaTrash />}
                 size="sm"
@@ -112,7 +112,7 @@ export const useProcess = () => {
             </span>
           ),
           d: (
-            <span onClick={(e) => openModal(item._id, "update")}>
+            <span onClick={() => openModal(item._id, "update")}>
               <BtnLink
                 icon={<FaEdit />}
                 size="sm"
@@ -139,7 +139,7 @@ export const useProcess = () => {
   useEffect(() => {
     getDataGovernment();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reload]);
 
   function closeModal(e) {
     e.preventDefault();
@@ -255,12 +255,13 @@ export const useProcess = () => {
   }
 
   const refresh = (e) => {
-    e.preventDefault();
-    if (reload) {
-      setReload(false);
-    } else {
-      setReload(true);
-    }
+    //e.preventDefault();
+    // if (reload) {
+    console.log(e);
+    setReload(e);
+    //} else {
+    //  setReload(true);
+    // }
   };
 
   return {

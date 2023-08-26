@@ -53,6 +53,7 @@ function Process() {
               btnText="SALVAR"
               processData={action === "update" ? editProcesso : null}
               handleSubmit={createUpdateProcesso}
+              refresh={refresh}
             />
           </div>
         </ModalBody>

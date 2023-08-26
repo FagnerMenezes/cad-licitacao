@@ -1,3 +1,4 @@
+import { FormEmpenho, Item, ListSearch, Pagination } from "@/services/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
@@ -15,27 +16,17 @@ import {
 } from "react-icons/fa";
 import InputFloat from "../form/InputFloat";
 import SubmitButton from "../form/SubmitButton";
-
-import { FormEmpenho, Item, ListSearch, Pagination } from "@/services/index";
-//import uuid from "react-uuid";
-//import Swal from "sweetalert2";
 import GovernmentForm from "../goverment/GovernmentForm";
 import DadosGerais from "./DadosGerais";
 import LinksProcesso from "./LinksProcesso";
-//import Proposta from "./Proposta";
 import { UseProcessForm } from "./useProcessForm";
 
-// const process = {
-//   process_data: { modality: "", portal: "", status: "", type_dispute: "" },
-//   government: [],
-//   notes: [],
-//   note_commitment: [],
-//   reference_term: {
-//     itens: [],
-//   },
-// };
-
-function ProcessForm({ handleSubmit, processData, btnText }) {
+function ProcessForm({
+  handleSubmit,
+  processData,
+  btnText,
+  refresh = () => {},
+}) {
   const {
     processo,
     getDataGovernment,
@@ -47,10 +38,8 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
     empenho,
     createUpdateEmpenho,
     deleteEmpenho,
-    //getEditEmpenho,
     titleEmpenho,
     item,
-    // getDataItem,
     createUpdateItem,
     deleteItem,
     handleTermItem,
@@ -62,7 +51,7 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
     handleNotes,
     enviarNotes,
     nameGovernment,
-    refresh,
+    //refresh,
     showModal,
     showModalAddGov,
     showModalEditGov,
@@ -79,330 +68,21 @@ function ProcessForm({ handleSubmit, processData, btnText }) {
     abrirModalItem,
     setRefresh,
   } = UseProcessForm(processData);
-  // const [orgEdit, setOrgEdit] = useState([] || null);
-  // const [processo, setProcess] = useState(processData || process);
-  //const [empenho, setEmpenho] = useState({});
-  //const [item, setItem] = useState({});
-  // const [showModal, setShowModal] = useState(false);
-  // const [showModalAddGov, setShowModalAddGov] = useState(false);
-  // const [showModalEditGov, setShowModalEditGov] = useState(false);
-  // const [showModalEmpenho, setShowModalEmpenho] = useState(false);
-  // const [showModalItem, setShowModalItem] = useState(false);
-  //const [refresh, setRefresh] = useState(false);
-  // const [notes, setNotes] = useState([]);
-  // const [titleEmpenho, setTitleEmpenho] = useState("");
-  // const [titleItem, setTitleItem] = useState("");
-  // const [actionEmpenho, setActionEmpenho] = useState(0);
-  // const [actionItem, setActionItem] = useState(0);
 
   useMemo(() => {
     getDataGovernment();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  //console.log("redenrizou");
-  // function getEditOrgao(codigo) {
-  //   if (!codigo) {
-  //     return;
-  //   } else {
-  //     const foundGov = processo.government.filter((data) =>
-  //       data._id.includes(codigo)
-  //     );
-  //     setOrgEdit(foundGov[0]);
-  //     setShowModalEditGov(true);
-  //   }
-  // }
-
-  // function getEditEmpenho(codigo) {
-  //   if (!codigo) {
-  //     return;
-  //   } else {
-  //     const foundEmpenho = processo.note_commitment.filter((data) =>
-  //       data._id.includes(codigo)
-  //     );
-  //     setEmpenho(foundEmpenho[0]);
-  //   }
-  // }
-
-  // function getDataItem(codigo) {
-  //   if (!codigo) {
-  //     return;
-  //   } else {
-  //     const foundItem = processo.reference_term.itens.filter((data) =>
-  //       data._id.includes(codigo)
-  //     );
-  //     setItem(foundItem[0]);
-  //   }
-  // }
-
-  // function getDataItemList(data) {
-  //   const value = data.manager === "false" ? "true" : data.manager;
-
-  //   const dados = {
-  //     process_data: {
-  //       ...processo.process_data,
-  //       code_bidding: data.code_government,
-  //     },
-  //     government: [
-  //       {
-  //         ...processo.government,
-  //         _id: data._id,
-  //         name: data.name,
-  //         cnpj: data.cnpj,
-  //         code_government: data.code_government,
-  //         manager: value,
-  //         address: data.address,
-  //         contact: data.contact,
-  //       },
-  //     ],
-  //   };
-  //   setProcess({
-  //     ...processo,
-  //     ...dados,
-  //   });
-  //   setShowModal(false);
-  // }
 
   const submit = (e) => {
     e.preventDefault();
     try {
       handleSubmit(processo);
-      setRefresh(!refresh);
+      refresh(true);
     } catch (error) {
       console.error(error);
     }
   };
-
-  // function enviarNotes() {
-  //   const dados = {
-  //     _id: uuid(),
-  //     comments: notes,
-  //     createdAt: new Date().toISOString().split("T")[0],
-  //   };
-
-  //   processo.notes.push(dados);
-  //   setNotes("");
-  // }
-
-  // function handleNotes(e) {
-  //   e.preventDefault();
-  //   setNotes(e.target.value);
-  // }
-
-  // function fecharModal(e) {
-  //   e.preventDefault();
-  //   setShowModal(false);
-  // }
-
-  // async function editarOrgao(org) {
-  //   const oldGovernment = processo.government.find(
-  //     (item) => item._id === org._id
-  //   );
-  //   if (oldGovernment) {
-  //     Object.assign(oldGovernment, { ...org });
-  //   }
-  //   setShowModalEditGov(false);
-  // }
-
-  // function createOrgao(org) {
-  //   org._id = uuid();
-  //   const dados = {
-  //     ...processo,
-  //     process_data: {
-  //       ...processo.process_data,
-  //       code_bidding: org.code_government,
-  //     },
-  //     government: [...processo.government, org],
-  //   };
-
-  //   setProcess({
-  //     ...processo,
-  //     ...dados,
-  //   });
-  //   setShowModalAddGov(false);
-  // }
-
-  //DADOS EMPENHOS DO PROCESSO
-  // const createEmpenho = (empenho) => {
-  //   empenho._id = uuid();
-  //   const dados = {
-  //     ...processo,
-  //     note_commitment: [...processo.note_commitment, empenho],
-  //   };
-  //   setProcess({
-  //     ...processo,
-  //     ...dados,
-  //   });
-  // };
-
-  // const updateEmpenho = (empenho) => {
-  //   const foundEmpenho = processo.note_commitment.find(
-  //     (note) => note._id === empenho._id
-  //   );
-
-  //   if (foundEmpenho) {
-  //     Object.assign(foundEmpenho, { ...empenho });
-  //   }
-  // };
-
-  // const createUpdateEmpenho = (data) => {
-  //   if (actionEmpenho === 1) {
-  //     createEmpenho(data);
-  //   }
-  //   if (actionEmpenho === 2) {
-  //     updateEmpenho(data);
-  //   }
-  //   setShowModalEmpenho(false);
-  // };
-
-  // const deleteEmpenho = (e, value) => {
-  //   e.preventDefault();
-  //   const updatedNoteCommitment = processo.note_commitment.filter(
-  //     (item) => item._id !== value
-  //   );
-  //   setProcess({
-  //     ...processo,
-  //     note_commitment: updatedNoteCommitment,
-  //   });
-  // };
-
-  // const abrirModalEmpenho = (e, op, codigo) => {
-  //   e.preventDefault();
-
-  //   setActionEmpenho(op);
-  //   if (op === 1) {
-  //     setEmpenho({});
-  //     setTitleEmpenho("Cadastrar empenho");
-  //   } else {
-  //     getEditEmpenho(codigo);
-  //     setTitleEmpenho("Editar empenho");
-  //   }
-
-  //   setShowModalEmpenho(true);
-  // };
-
-  //DADOS ITENS DO PROCESSO
-
-  // const abrirModalItem = (op, codigo) => {
-  //   setActionItem(op);
-  //   if (op === 1) {
-  //     setItem({});
-  //     setTitleItem("NOVO ITEM");
-  //   } else {
-  //     getDataItem(codigo);
-  //     setTitleItem("EDITAR ITEM");
-  //   }
-
-  //   setShowModalItem(true);
-  // };
-
-  // const abrirModalAddGov = (e) => {
-  //   e.preventDefault();
-  //   setShowModalAddGov(true);
-  //   setOrgEdit({} || null);
-  // };
-  // const createItem = (item) => {
-  //   item._id = uuid();
-  //   const dados = {
-  //     ...processo,
-  //     reference_term: {
-  //       ...processo.reference_term,
-  //       itens: [...processo.reference_term.itens, item],
-  //     },
-  //   };
-  //   setProcess({
-  //     ...processo,
-  //     ...dados,
-  //   });
-  // };
-
-  // const updateItem = (item) => {
-  //   const foundItem = processo.reference_term.itens.find(
-  //     (data) => data._id === item._id
-  //   );
-
-  //   if (foundItem) {
-  //     Object.assign(foundItem, { ...item });
-  //   }
-  // };
-
-  // const createUpdateItem = (data) => {
-  //   if (actionItem === 1) {
-  //     createItem(data);
-  //   }
-  //   if (actionItem === 2) {
-  //     updateItem(data);
-  //     setShowModalItem(false);
-  //   }
-  // };
-
-  // const deleteItem = (codigo) => {
-  //   const foundItem = processo.reference_term.itens.filter(
-  //     (data) => data._id !== codigo
-  //   );
-  //   setProcess({
-  //     ...processo,
-  //     reference_term: {
-  //       ...processo.reference_term,
-  //       itens: foundItem,
-  //     },
-  //   });
-  // };
-
-  // const handleTermItem = (e) => {
-  //   const dados = {
-  //     ...processo,
-  //     reference_term: {
-  //       ...processo.reference_term,
-  //       [e.target.name]: e.target.value,
-  //     },
-  //   };
-  //   setProcess({
-  //     ...processo,
-  //     ...dados,
-  //   });
-  // };
-
-  // const getDadosGerais = (data) => {
-  //   setProcess({
-  //     ...processo,
-  //     ...data,
-  //   });
-  // };
-
-  // const abrirModalAddGov = (e) => {
-  //   e.preventDefault();
-  //   setShowModalAddGov(true);
-  //   setOrgEdit({} || null);
-  // };
-
-  // const gerarProposta = () => {
-  //   const filterItens = processo.reference_term.itens.filter(
-  //     (term) => (term.winner === true) | (term.winner === "true")
-  //   );
-
-  //   if (filterItens.length > 0) {
-  //     if (
-  //       processo.government.length <= 0 ||
-  //       processo.process_data.length <= 0
-  //     ) {
-  //       Swal.fire("Proposta", "Informe os dados da licitação", "info");
-  //     } else {
-  //       Swal.fire("Proposta", "Proposta gerada com sucesso!", "success")
-  //         .then()
-  //         .finally(() => {
-  //           Proposta.gerarProposta(processo);
-  //         });
-  //     }
-  //   } else {
-  //     Swal.fire("Proposta", "Não há itens arrematados", "info");
-  //   }
-  // };
-
-  // const nameGovernment = processo.government
-  //   .filter((data) => data.manager === "true")
-  //   .map((item) => {
-  //     return item.name;
-  //   });
 
   return (
     <div className="flex flex-col rounded-md bg-white p-4 border">
@@ -992,5 +672,6 @@ ProcessForm.propTypes = {
   handleSubmit: PropTypes.func,
   processData: PropTypes.array,
   btnText: PropTypes.string,
+  refresh: PropTypes.func,
 };
 export default ProcessForm;
