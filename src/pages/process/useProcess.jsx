@@ -255,13 +255,7 @@ export const useProcess = () => {
   }
 
   const refresh = (e) => {
-    //e.preventDefault();
-    // if (reload) {
-    console.log(e);
     setReload(e);
-    //} else {
-    //  setReload(true);
-    // }
   };
 
   return {
