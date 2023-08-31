@@ -3,6 +3,7 @@ import { FaAt, FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useFetch from "../../hooks/UseFetch";
 import { BtnLink, api } from "../../services";
+import { formatDate } from "../../util/formatDate";
 import { STATUS_ICONS } from "./TableConfig";
 
 const data = new Date();
@@ -89,7 +90,7 @@ export const useProcess = () => {
         return {
           edital: bidding_notice,
           orgao: govermentName,
-          data_final: new Date(date_finish).toISOString().split("T")[0],
+          data_final: formatDate(date_finish),
           portal: (
             <span className="flex justify-center items-end  gap-2">
               <FaAt className="text-blue-600" />

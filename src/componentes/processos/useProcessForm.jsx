@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import uuid from "react-uuid";
 import Swal from "sweetalert2";
 import useFetch from "../../hooks/UseFetch";
+import { getDataServicesBec } from "../../services/process/getDataServicesBec";
 import Proposta from "./Proposta";
 
 const process = {
@@ -340,6 +341,20 @@ export const UseProcessForm = (processData) => {
     setOrgEdit({} || null);
   };
 
+  const loadDataBec = useCallback(async (oc) => {
+    //console.log(oc);
+    if (oc !== "" || null) {
+      const bec = await getDataServicesBec(oc);
+      return bec;
+    } else {
+      Swal.fire({
+        title: "Erro",
+        text: "Informe o numero da OC do portal da BEC ",
+        icon: "error",
+      });
+    }
+  }, []);
+
   return {
     processo,
     getDataGovernment,
@@ -387,5 +402,6 @@ export const UseProcessForm = (processData) => {
     abrirModalAddGov,
     abrirModalEmpenho,
     abrirModalItem,
+    loadDataBec,
   };
 };

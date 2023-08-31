@@ -66,7 +66,6 @@ function ProcessForm({
     abrirModalAddGov,
     abrirModalEmpenho,
     abrirModalItem,
-    setRefresh,
   } = UseProcessForm(processData);
 
   useMemo(() => {
@@ -488,6 +487,7 @@ function ProcessForm({
                     })
                 }
                 portal={processo != null && processo.process_data.portal}
+                modality={processo != null && processo.process_data.modality}
               />
             </Tab>
             <Tab eventKey="uasg_participantes" title="Uasg participantes">

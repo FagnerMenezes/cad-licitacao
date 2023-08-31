@@ -1,9 +1,11 @@
-import PropTypes from "prop-types";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Modal, ModalFooter } from "react-bootstrap";
+import { AiFillApi } from "react-icons/ai";
 import { FaPlus, FaTimes } from "react-icons/fa";
+import Swal from "sweetalert2";
 import api from "../../services/api";
 import FormConfig from "../form/FormConfig";
+import { UseProcessForm } from "./useProcessForm";
 
 const DadosGerais = ({ getDados, data }) => {
   const [processData, setProcessData] = useState(data || {});
@@ -15,6 +17,9 @@ const DadosGerais = ({ getDados, data }) => {
   const [titleModalConfig, settitleModalConfig] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [collection, setCollection] = useState();
+  const { loadDataBec } = UseProcessForm();
+  const [isOpen, setIsOpen] = useState(false);
+  const inputRefOc = useRef("");
 
   useMemo(() => {
     api.get("modalidades").then((response) => {
@@ -40,7 +45,9 @@ const DadosGerais = ({ getDados, data }) => {
         [e.target.name]: e.target.value,
       },
     };
-
+    if (e.target.name === "bidding_notice") {
+      inputRefOc.current = e.target.value;
+    }
     setProcessData({
       ...processData,
       ...dados,
@@ -75,6 +82,7 @@ const DadosGerais = ({ getDados, data }) => {
       ...processData,
       ...dados,
     });
+
     getDados(dados);
   }
 
@@ -121,6 +129,36 @@ const DadosGerais = ({ getDados, data }) => {
     setModalConfig(false);
     setRefresh(!refresh);
   }
+  async function searchDataApiPortal(e) {
+    e.preventDefault();
+    try {
+      setIsOpen(true);
+      const key = String(processData.process_data.portal).toUpperCase();
+      if (key === "BEC") {
+        const OC = inputRefOc.current;
+        //console.log(OC);
+        const { process_data, data_government, reference_term } =
+          await loadDataBec(OC);
+
+        const dados = {
+          process_data: process_data,
+          government: data_government,
+          reference_term: reference_term,
+        };
+
+        setProcessData({
+          ...processData,
+          ...dados,
+        });
+        getDados(dados);
+      }
+    } catch (error) {
+      Swal.fire({ title: "Error", text: error.message, icon: "error" });
+    } finally {
+      setIsOpen(false);
+    }
+  }
+
   return (
     <div className="grid sm:grid-cols-3 gap-1 grid-cols-1">
       <div className="border rounded-md flex items-center gap-1 h-8">
@@ -155,6 +193,7 @@ const DadosGerais = ({ getDados, data }) => {
               ? processData.process_data.bidding_notice
               : ""
           }
+          ref={inputRefOc}
         />
       </div>
       <div className="border rounded-md flex items-center gap-1 h-8">
@@ -344,6 +383,41 @@ const DadosGerais = ({ getDados, data }) => {
           value={processData.government[0]?.code_government}
         />
       </div>
+      <div className="flex items-center w-full">
+        <button
+          onClick={(e) => searchDataApiPortal(e)}
+          className=" flex items-center bg-emerald-500 border rounded-md text-white font-semibold h-11 p-1 hover:bg-emerald-400"
+        >
+          {isOpen ? (
+            <>
+              <span className="text-white">Carregando...</span>
+              <div role="status">
+                <svg
+                  aria-hidden="true"
+                  className="w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-white fill-white"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentFill"
+                  />
+                </svg>
+              </div>
+            </>
+          ) : (
+            <>
+              {" "}
+              <AiFillApi className="text-2xl" /> Carregar dados via api
+            </>
+          )}
+        </button>
+      </div>
       {/**MODAL CONFIGURAÇÕES */}
       <Modal
         show={modalConfig}
@@ -370,10 +444,6 @@ const DadosGerais = ({ getDados, data }) => {
       </Modal>
     </div>
   );
-};
-DadosGerais.propTypes = {
-  getDados: PropTypes.func,
-  data: PropTypes.array,
 };
 
 export default DadosGerais;

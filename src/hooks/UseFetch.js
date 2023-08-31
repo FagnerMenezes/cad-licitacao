@@ -25,12 +25,14 @@ const useFetch = {
       .catch((error) => error);
   },
   post: async (url, data) => {
+    //console.log(data);
     return api
       .post(url, data)
       .then((response) => {
+        //console.log(response);
         return response;
       })
-      .catch((error) => error);
+      .catch((error) => console.log(error));
   },
   put: async (url, data) => {
     return api
