@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 export const formatDate = (initialDate) => {
+  //console.log(initialDate);
+  if (initialDate === undefined) return;
   const date = new Date(initialDate).toISOString().split("T")[0];
   const year = date.substring(0, 4);
   const month = date.substring(5, 7);
