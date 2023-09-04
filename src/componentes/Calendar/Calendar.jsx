@@ -5,6 +5,7 @@ import { FaTimes } from "react-icons/fa";
 //import axios from "axios";
 import { Modal, ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
 import api from "../../services/api";
+import { formatDate } from "../../util/formatDate";
 
 var data = new Date();
 const datas = {
@@ -124,9 +125,7 @@ const Calendar = () => {
               <div className="col-sm-4">
                 <strong>DATA DISPUTA:</strong>{" "}
               </div>
-              <div className="col-sm-8">
-                {new Date(process.date_finish).toLocaleDateString()}
-              </div>
+              <div className="col-sm-8">{formatDate(process.date_finish)}</div>
               <div className="col-sm-4">
                 <strong>EDITAL:</strong>{" "}
               </div>
@@ -146,7 +145,9 @@ const Calendar = () => {
               <div className="col-sm-4">
                 <strong>STATUS:</strong>{" "}
               </div>
-              <div className="col-sm-8">{process.status}</div>
+              <div className="col-sm-8 text-blue-700 p-1 w-auto font-bold uppercase">
+                {process.status}
+              </div>
             </div>
           </div>
         </ModalBody>

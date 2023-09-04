@@ -23,6 +23,7 @@ const schemaItem = y.object().shape({
       .required("Campo valor de referência é obrigatório"),
   }),
   item_balance: y.number().required("Campo saldo da ata é obrigatório"),
+  origination: y.string(),
 });
 
 const Item = ({ data, handleSubmitForm }) => {
@@ -87,6 +88,7 @@ const Item = ({ data, handleSubmitForm }) => {
               <option value="lata">LATA</option>
               <option value="bobina">BOBINA</option>
               <option value="metro">METRO</option>
+              <option value="par">PAR</option>
             </select>
           </div>
 
@@ -158,10 +160,22 @@ const Item = ({ data, handleSubmitForm }) => {
             />
           </label>
         </div>
-        <div className="flex flex-col border rounded-md w-full mt-2 ">
+        <div className="flex flex-col border rounded-md mt-2 p-2">
+          <select
+            {...register("origination")}
+            className="outline-none border-none appearance-none text-slate-400 ml-1"
+            name="origination"
+            title="Origem do produto"
+          >
+            <option value="">Escolha uma opção</option>
+            <option value="Produzido no Brasil">Produzido no Brasil</option>
+            <option value="Importado">Importado</option>
+          </select>
+        </div>
+        <div className="flex flex-col border rounded-md  mt-2">
           <textarea
             {...register("description")}
-            className="w-full outline-none border-none "
+            className="w-full outline-none border-none h-32 text-xs"
             name="description"
             placeholder="Descrição"
             title="Descrição do produto"
@@ -170,6 +184,7 @@ const Item = ({ data, handleSubmitForm }) => {
         {errors.description && (
           <p className="text-red-500">{errors.description.message}</p>
         )}
+
         <button
           type="submit"
           className="text-white font-bold bg-blue-600 hover:bg-blue-800 border rounded-md px-4 py-2 outline-none mt-2"

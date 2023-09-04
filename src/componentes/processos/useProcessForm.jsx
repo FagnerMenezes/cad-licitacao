@@ -3,6 +3,7 @@ import uuid from "react-uuid";
 import Swal from "sweetalert2";
 import useFetch from "../../hooks/UseFetch";
 import { getDataServicesBec } from "../../services/process/getDataServicesBec";
+import { ProposalPriceBec } from "../proposta/ProposalPriceBec";
 import Proposta from "./Proposta";
 
 const process = {
@@ -220,6 +221,20 @@ export const UseProcessForm = (processData) => {
       ...dados,
     });
   };
+  const handleTermInitialData = (e) => {
+    const dados = {
+      ...processo,
+      reference_term: {
+        ...processo.reference_term,
+        [e.target.name]: e.target.value,
+      },
+    };
+    setProcess({
+      ...processo,
+      ...dados,
+    });
+    console.log(dados);
+  };
   function getDataItemList(data) {
     const value = data.manager === "false" ? "true" : data.manager;
 
@@ -296,6 +311,10 @@ export const UseProcessForm = (processData) => {
     }
   };
 
+  const sendProposalToEffecti = async () => {
+    await ProposalPriceBec(processo);
+  };
+  //TODO IMPLANTAR ENVIO DE PROPOSTA PARA EFFECTI
   const nameGovernment = processo.government
     .filter((data) => data.manager === "true")
     .map((item) => {
@@ -374,6 +393,7 @@ export const UseProcessForm = (processData) => {
     createUpdateItem,
     deleteItem,
     handleTermItem,
+    handleTermInitialData,
     getDataItemList,
     titleItem,
     getDadosGerais,
@@ -403,5 +423,6 @@ export const UseProcessForm = (processData) => {
     abrirModalEmpenho,
     abrirModalItem,
     loadDataBec,
+    sendProposalToEffecti,
   };
 };

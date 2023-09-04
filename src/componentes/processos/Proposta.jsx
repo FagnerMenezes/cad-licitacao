@@ -30,40 +30,38 @@ const Proposta = {
           bold: true,
           italics: true,
           alignment: "center",
+          margin: [0, 10, 0, 0],
         },
       },
     ];
     const dadosEmpresa = [
       {
         text: "ER COMERCIAL MATERIAIS PARA SOLDA LTDA ME",
-        style: {
-          fontSize: 8,
-          bold: true,
-        },
+        style: "styles_header",
       },
       {
         text: "CNPJ 15.135.292/0001-47",
-        style: "stileheader",
+        style: "styles_header",
       },
       {
         text: "RUA CARLOS MARIA STEIMBERG, 166, VILA RÉ SÃO PAULO - SP",
-        style: "stileheader",
+        style: "styles_header",
       },
       {
         text: "TEL 112957-4061 - CEL 11954581488",
-        style: "stileheader",
+        style: "styles_header",
       },
       {
         text: "E-mail licitacoes1@eduar.com.br",
-        style: "stileheader",
+        style: "styles_header",
       },
     ];
 
     const titleProposta = [
       {
-        text: "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+        text: "----------------------------------------------------------------------------------------------------------------------------------------------------------------",
         with: "700px",
-        margin: [1, 0, 1, 0],
+        // margin: [0, 0, 0, 0],
       },
       {
         text: "PROPOSTA",
@@ -76,7 +74,15 @@ const Proposta = {
     const textHeader = [
       {
         text: `Ao órgão ${data.government[0].code_government} - ${data.government[0].name} Pregão Eletrônico N° ${data.process_data.bidding_notice}. Apresentamos nossa proposta de preços.`,
-        style: "txtHeader",
+        style: {
+          margin: [0, 10, 0, 0],
+        },
+      },
+      {
+        text: `${data.reference_term?.initial_data}`,
+        style: {
+          margin: [0, 10, 0, 0],
+        },
       },
     ];
 
@@ -224,7 +230,6 @@ const Proposta = {
           },
         ],
       },
-
       {
         columns: [
           {
@@ -305,6 +310,8 @@ const Proposta = {
       .reduce((acc, item) => acc + item);
 
     const details = [
+      titleProposta,
+      textHeader,
       {
         layout: "lightHorizontalLines",
         table: {
@@ -357,13 +364,11 @@ const Proposta = {
     const foot = [];
     const docDefinition = {
       pageSize: "A4",
-      pageMargins: [40, 180, 20, 5],
+      pageMargins: [40, 90, 20, 5], //40-180-20-5
       header: [
         {
           columns: [logoEmpresa, dadosEmpresa],
         },
-        titleProposta,
-        textHeader,
       ],
       watermark: {
         text: "ER",
@@ -391,14 +396,15 @@ const Proposta = {
           fontSize: 8,
           bold: true,
         },
-        stileheader: {
-          fontSize: 8,
+        styles_header: {
+          fontSize: 10,
           bold: true,
+          margin: [0, 5, 0, 0],
         },
         txtHeader: {
           fontsize: 8,
           color: "#3443ca",
-          margin: [30, 30, 0, 30],
+          // margin: [30, 30, 0, 30],
         },
       },
     };

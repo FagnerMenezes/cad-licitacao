@@ -6,6 +6,7 @@ import { Modal, ModalBody, ModalFooter, Tab, Tabs } from "react-bootstrap";
 import {
   FaCloudDownloadAlt,
   FaComments,
+  FaDatabase,
   FaEdit,
   FaEye,
   FaPlus,
@@ -43,6 +44,7 @@ function ProcessForm({
     createUpdateItem,
     deleteItem,
     handleTermItem,
+    handleTermInitialData,
     getDataItemList,
     titleItem,
     getDadosGerais,
@@ -51,7 +53,7 @@ function ProcessForm({
     handleNotes,
     enviarNotes,
     nameGovernment,
-    //refresh,
+    sendProposalToEffecti,
     showModal,
     showModalAddGov,
     showModalEditGov,
@@ -265,25 +267,35 @@ function ProcessForm({
                 </div>
 
                 <div className="col-sm-8">
-                  <p>
-                    <label
-                      style={{
-                        fontSize: "16px",
-                        fontWeight: "500",
-                        color: "#444646",
-                      }}
-                    >
-                      Observação
-                    </label>
-                  </p>
-                  <textarea
-                    className="text-justify text-sm w-full border rounded-md outline-none h-full p-1 "
-                    name="comments"
-                    onChange={(e) => handleTermItem(e)}
-                  >
-                    {(processo != null && processo.reference_term?.comments) ||
-                      `Declaramos que estamos de pleno acordo com todas as condições estabelecidas no Edital e seus Anexos. Declaramos que os produtos a serem entregues serão novos e nunca antes utilizados. Declaramos que nos preços cotados estão incluídas todas as despesas que, direta ou indiretamente, fazem parte do presente objeto`}
-                  </textarea>
+                  <div className="row">
+                    <div className="col-6">
+                      <label className="font-semibold text-slate-700">
+                        Dados iniciais da proposta
+                      </label>
+                      <textarea
+                        className="text-justify text-sm w-full border rounded-md outline-none h-40  p-1 "
+                        name="initial_data"
+                        onChange={(e) => handleTermInitialData(e)}
+                      >
+                        {processo != null &&
+                          processo.reference_term?.initial_data}
+                      </textarea>
+                    </div>
+                    <div className="col-6">
+                      <label className="font-semibold text-slate-700">
+                        Observação
+                      </label>
+                      <textarea
+                        className="text-justify text-sm w-full border rounded-md outline-none h-40 p-1 "
+                        name="comments"
+                        onChange={(e) => handleTermItem(e)}
+                      >
+                        {(processo != null &&
+                          processo.reference_term?.comments) ||
+                          `Declaramos que estamos de pleno acordo com todas as condições estabelecidas no Edital e seus Anexos. Declaramos que os produtos a serem entregues serão novos e nunca antes utilizados. Declaramos que nos preços cotados estão incluídas todas as despesas que, direta ou indiretamente, fazem parte do presente objeto`}
+                      </textarea>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -304,8 +316,16 @@ function ProcessForm({
                   >
                     <FaPrint /> Impressão da proposta
                   </button>
+                  <button
+                    className="flex items-center border-2 border-sky-600 text-sky-600 rounded-lg p-2 outline-1 outline-sky-600 outline-offset-1 gap-2 hover:bg-sky-600 hover:text-white"
+                    type="button"
+                    onClick={sendProposalToEffecti}
+                  >
+                    <FaDatabase /> Enviar proposta effecti
+                  </button>
                 </div>
               </div>
+
               <hr className="hr" />
               <div className="row">
                 {processo != null &&
@@ -675,3 +695,4 @@ ProcessForm.propTypes = {
   refresh: PropTypes.func,
 };
 export default ProcessForm;
+//TODO INPLANTAR PROPOSTA EFFECTI
