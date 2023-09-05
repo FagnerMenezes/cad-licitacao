@@ -83,12 +83,18 @@ const Item = ({ data, handleSubmitForm }) => {
               title="Unidade de medida"
             >
               <option value="">Escolha a unidade</option>
-              <option value="kg">KG</option>
-              <option value="und">UND</option>
-              <option value="lata">LATA</option>
-              <option value="bobina">BOBINA</option>
-              <option value="metro">METRO</option>
-              <option value="par">PAR</option>
+              <option value="KG">KG</option>
+              <option value="UND">UND</option>
+              <option value="LATA">LATA</option>
+              <option value="BOBINA">BOBINA</option>
+              <option value="ROLO">ROLO</option>
+              <option value="METRO">METRO</option>
+              <option value="PAR">PAR</option>
+              <option value="CAIXA">CAIXA</option>
+              <option value="ML">ML</option>
+              <option value="PEÇA">PEÇA</option>
+              <option value="KIT">KIT</option>
+              <option value="CJ">CJ</option>
             </select>
           </div>
 

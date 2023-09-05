@@ -304,20 +304,20 @@ function ProcessForm({
                 <div className="flex gap-3 items-center p-1">
                   <button
                     type="button"
-                    className="flex items-center border-2 outline-offset-1 border-indigo-600 text-indigo-600 rounded-lg p-2 outline-1 outline-indigo-600 gap-2 hover:bg-indigo-600 hover:text-white"
+                    className="flex items-center border-2 outline-offset-1 border-indigo-600 text-slate-800 text-xs rounded-lg p-2 outline-1 outline-indigo-600 gap-2 hover:bg-indigo-600 hover:text-white"
                     onClick={() => abrirModalItem(1, "")}
                   >
                     <FaPlus /> Novo Item
                   </button>{" "}
                   <button
-                    className="flex items-center border-2 border-emerald-600 text-emerald-600 rounded-lg p-2 outline-1 outline-emerald-600 outline-offset-1 gap-2 hover:bg-emerald-600 hover:text-white"
+                    className="flex items-center border-2 border-emerald-600 text-slate-800 text-xs rounded-lg p-2 outline-1 outline-emerald-600 outline-offset-1 gap-2 hover:bg-emerald-600 hover:text-white"
                     type="button"
                     onClick={(e) => gerarProposta(e)}
                   >
                     <FaPrint /> Impressão da proposta
                   </button>
                   <button
-                    className="flex items-center border-2 border-sky-600 text-sky-600 rounded-lg p-2 outline-1 outline-sky-600 outline-offset-1 gap-2 hover:bg-sky-600 hover:text-white"
+                    className="flex items-center border-2 border-sky-600 text-slate-800 text-xs rounded-lg p-2 outline-1 outline-sky-600 outline-offset-1 gap-2 hover:bg-sky-600 hover:text-white"
                     type="button"
                     onClick={sendProposalToEffecti}
                   >

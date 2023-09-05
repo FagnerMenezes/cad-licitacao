@@ -1,11 +1,13 @@
+import Swal from "sweetalert2";
 import { RegisterProposalPriceBec } from "../../services/process/ServiceProposalPriceBec";
 
 export const ProposalPriceBec = async (dataProcess) => {
+  if (dataProcess.process_data.portal !== "BEC") return;
   const itens = [];
   dataProcess.reference_term.itens.map((item) => {
     const item_data = {
       numero: item.cod,
-      grupoLote: "",
+      grupoLote: item.lote,
       descricao: item.description,
       unidade: item.unit,
       valorUnitario: parseFloat(item.unitary_value.$numberDecimal),
@@ -33,5 +35,15 @@ export const ProposalPriceBec = async (dataProcess) => {
     itens,
   };
   //console.log(data);
-  await RegisterProposalPriceBec(data);
+  const response = await RegisterProposalPriceBec({ data });
+  if (response.status === 200) {
+    // console.log(response.data);
+    Swal.fire({
+      title: "OK",
+      text: "Proposta cadastrada com sucesso",
+      icon: "success",
+    });
+  } else {
+    Swal.fire({ title: "ERROR", text: response.statusText, icon: "success" });
+  }
 };
